@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:speechiq_frontend/core/navigation/app_shell.dart';
 
 import 'core/theme/app_theme.dart';
-import 'shared/cards/dashboard_page.dart' show DashboardPage;
 
 void main() {
   runApp(const SpeechIQApp());
@@ -16,7 +16,7 @@ class SpeechIQApp extends StatelessWidget {
       title: "SpeechIQ",
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const DashboardPage(),
+      home: const AppShell(),
     );
   }
 }
