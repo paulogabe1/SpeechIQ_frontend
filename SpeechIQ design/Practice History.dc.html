@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+.page{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--brand:#7C3AED;--brand2:#2563EB;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+.mono{font-family:'Geist Mono','SF Mono',monospace;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 32px 72px}
+a{color:var(--brand);text-decoration:none}
+a:hover{color:#6D28D9}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.h-sec{font-size:17px;font-weight:600;letter-spacing:-0.02em}
+.sub{color:var(--muted)}
+.title{display:flex;align-items:center;gap:11px;margin-bottom:22px}
+.title .lucide{width:24px;height:24px;color:var(--brand)}
+.title h1{font-size:29px;font-weight:600;letter-spacing:-0.03em;margin:0}
+/* insight hero */
+.insight{position:relative;overflow:hidden;border-radius:18px;padding:26px 30px;color:#fff;background:linear-gradient(135deg,#059669 0%,#0D9488 100%);box-shadow:0 14px 32px -12px rgba(5,120,90,0.5)}
+.insight-blob{position:absolute;border-radius:50%;background:rgba(255,255,255,0.1)}
+.insight-row{display:flex;align-items:center;gap:18px;position:relative;z-index:1}
+.insight-ic{width:56px;height:56px;border-radius:15px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.insight-ic .lucide{width:28px;height:28px}
+.insight-big{font-size:34px;font-weight:600;letter-spacing:-0.03em;line-height:1}
+.insight-lab{font-size:14px;color:rgba(255,255,255,0.85);margin-top:4px}
+.insight-note{font-size:14px;color:rgba(255,255,255,0.92);margin-top:16px;position:relative;z-index:1;font-weight:500}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+.stat{padding:20px 22px}
+.stat-h{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);font-weight:500}
+.stat-h .lucide{width:15px;height:15px}
+.stat-val{font-size:30px;font-weight:600;letter-spacing:-0.02em;margin-top:8px}
+/* chart */
+.chart-card{padding:26px 28px}
+.chart-svg{width:100%;height:auto;display:block;margin-top:10px}
+.legend{display:flex;gap:22px;margin-top:14px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.leg-line{width:16px;height:3px;border-radius:2px}
+.mstones{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line2)}
+.mstone{display:flex;align-items:center;gap:13px;padding:14px 16px;border:1px solid var(--line);border-radius:13px}
+.mstone-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mstone-ic .lucide{width:19px;height:19px}
+.mstone-ic.amber{background:#FBEFD4;color:#D97706}
+.mstone-ic.purple{background:#EEE4FB;color:#7C3AED}
+.mstone-t{font-size:14px;font-weight:600}
+.mstone-d{font-size:12.5px;color:var(--muted);margin-top:1px}
+/* sessions */
+.sess-card{margin-top:20px;padding:26px 28px}
+.sess-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.sess{border:1px solid var(--line);border-radius:14px;padding:18px 20px;transition:border-color .14s}
+.sess:hover{border-color:#D8D2EC}
+.sess-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.sess-id{font-size:15px;font-weight:600}
+.sess-date{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);margin-top:3px}
+.sess-date .lucide{width:13px;height:13px}
+.sess-overall{text-align:right}
+.sess-score{font-size:26px;font-weight:600;letter-spacing:-0.02em}
+.sess-olab{font-size:11px;color:var(--faint);font-weight:500}
+.dims{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.dim{text-align:center;background:var(--line2);border-radius:10px;padding:10px 6px}
+.dim-lab{font-size:11px;color:var(--muted);margin-bottom:4px}
+.dim-val{font-size:15px;font-weight:600}
+.shell{display:flex;min-height:100vh}
+.main{flex:1;min-width:0}
+</style>
+</helmet>
+<div class="page"><div class="shell">
+<dc-import name="SideNav" active="history" plan="free" hint-size="256px,100%"></dc-import>
+<div class="main"><div class="wrap">
+<div class="title"><i data-lucide="calendar"></i><h1>Practice History</h1></div>
+
+<div class="insight">
+<div class="insight-blob" style="width:150px;height:150px;top:-50px;right:-30px"></div>
+<div class="insight-blob" style="width:90px;height:90px;bottom:-34px;right:130px"></div>
+<div class="insight-row">
+<div class="insight-ic"><i data-lucide="trending-up"></i></div>
+<div><div class="insight-big mono">+12% Fluency</div><div class="insight-lab">Last 30 days</div></div>
+</div>
+<div class="insight-note">You're improving faster than last month — keep the momentum going.</div>
+</div>
+
+<div class="stats">
+<div class="card stat"><div class="stat-h"><i data-lucide="calendar"></i> Total sessions</div><div class="stat-val mono">10</div></div>
+<div class="card stat"><div class="stat-h"><i data-lucide="trophy"></i> Average score</div><div class="stat-val mono" style="color:#059669">80</div></div>
+<div class="card stat"><div class="stat-h"><i data-lucide="clock"></i> Total practice time</div><div class="stat-val mono">5h 53m</div></div>
+</div>
+
+<div class="card chart-card">
+<div><span class="h-sec">Your progress journey</span><div class="sub" style="font-size:12.5px;margin-top:3px">Overall, fluency and pacing across your last 10 sessions</div></div>
+<svg class="chart-svg" viewBox="0 0 920 330" data-om-raster="true">
+<defs><linearGradient id="ovf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7C3AED" stop-opacity="0.13"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/></linearGradient></defs>
+<sc-for list="{{ grid }}" as="g" hint-placeholder-count="5"><line x1="44" y1="{{ g.y }}" x2="904" y2="{{ g.y }}" stroke="#F1F1F5"></line></sc-for>
+<sc-for list="{{ ylabels }}" as="yl" hint-placeholder-count="5"><text x="34" y="{{ yl.y }}" text-anchor="end" font-size="10" fill="#A6A5B0" font-family="Geist Mono,monospace">{{ yl.v }}</text></sc-for>
+<sc-for list="{{ mstoneMarks }}" as="m" hint-placeholder-count="2"><line x1="{{ m.x }}" y1="30" x2="{{ m.x }}" y2="278" stroke="#F0A020" stroke-width="1.5" stroke-dasharray="5 5"></line><text x="{{ m.x }}" y="22" text-anchor="middle" font-size="10.5" font-weight="600" fill="#D97706" font-family="Geist,sans-serif">{{ m.label }}</text></sc-for>
+<path d="{{ overallArea }}" fill="url(#ovf)"></path>
+<polyline points="{{ pacingLine }}" fill="none" stroke="#059669" stroke-width="2"></polyline>
+<polyline points="{{ fluencyLine }}" fill="none" stroke="#2563EB" stroke-width="2"></polyline>
+<polyline points="{{ overallLine }}" fill="none" stroke="#7C3AED" stroke-width="3"></polyline>
+<sc-for list="{{ overallDots }}" as="d" hint-placeholder-count="10"><circle cx="{{ d.x }}" cy="{{ d.y }}" r="{{ d.r }}" fill="{{ d.fill }}" stroke="#fff" stroke-width="{{ d.sw }}"></circle></sc-for>
+<sc-for list="{{ xlabels }}" as="xl" hint-placeholder-count="10"><text x="{{ xl.x }}" y="302" text-anchor="middle" font-size="10" fill="#A6A5B0" font-family="Geist Mono,monospace">{{ xl.v }}</text></sc-for>
+</svg>
+<div class="legend"><div class="leg"><span class="leg-line" style="background:#7C3AED"></span>Overall</div><div class="leg"><span class="leg-line" style="background:#2563EB"></span>Fluency</div><div class="leg"><span class="leg-line" style="background:#059669"></span>Pacing</div><div class="leg"><span class="leg-line" style="background:#F0A020"></span>Milestone</div></div>
+<div class="mstones">
+<div class="mstone"><div class="mstone-ic amber"><i data-lucide="award"></i></div><div><div class="mstone-t">Level Up</div><div class="mstone-d">Session #4</div></div></div>
+<div class="mstone"><div class="mstone-ic purple"><i data-lucide="star"></i></div><div><div class="mstone-t">Personal Best</div><div class="mstone-d">Session #10 · Score 91</div></div></div>
+</div>
+</div>
+
+<div class="card sess-card">
+<span class="h-sec">All sessions</span>
+<div class="sess-list">
+<sc-for list="{{ sessions }}" as="s" hint-placeholder-count="10">
+<div class="sess">
+<div class="sess-top">
+<div><div class="sess-id">Session #{{ s.id }}</div><div class="sess-date"><i data-lucide="calendar"></i> {{ s.date }} · {{ s.duration }} min</div></div>
+<div class="sess-overall"><div class="sess-score" style="{{ s.overallStyle }}">{{ s.overall }}</div><div class="sess-olab">Overall</div></div>
+</div>
+<div class="dims"><sc-for list="{{ s.dims }}" as="d" hint-placeholder-count="5"><div class="dim"><div class="dim-lab">{{ d.name }}</div><div class="dim-val" style="{{ d.style }}">{{ d.val }}</div></div></sc-for></div>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div></div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1500}}">
+class Component extends DCLogic {
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+  icons() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+
+  SESSIONS = [
+    { id: 1, overall: 70, fluency: 65, pacing: 73, clarity: 68, confidence: 70, pronunciation: 74, date: "9 days ago", duration: 25 },
+    { id: 2, overall: 73, fluency: 68, pacing: 76, clarity: 70, confidence: 73, pronunciation: 78, date: "8 days ago", duration: 28 },
+    { id: 3, overall: 75, fluency: 70, pacing: 78, clarity: 73, confidence: 75, pronunciation: 79, date: "7 days ago", duration: 30 },
+    { id: 4, overall: 81, fluency: 78, pacing: 83, clarity: 79, confidence: 82, pronunciation: 83, date: "6 days ago", duration: 37 },
+    { id: 5, overall: 77, fluency: 73, pacing: 80, clarity: 75, confidence: 77, pronunciation: 80, date: "5 days ago", duration: 33 },
+    { id: 6, overall: 83, fluency: 80, pacing: 85, clarity: 81, confidence: 84, pronunciation: 85, date: "4 days ago", duration: 40 },
+    { id: 7, overall: 79, fluency: 75, pacing: 82, clarity: 78, confidence: 80, pronunciation: 80, date: "3 days ago", duration: 35 },
+    { id: 8, overall: 85, fluency: 82, pacing: 88, clarity: 83, confidence: 85, pronunciation: 87, date: "2 days ago", duration: 42 },
+    { id: 9, overall: 82, fluency: 78, pacing: 85, clarity: 80, confidence: 82, pronunciation: 85, date: "Yesterday", duration: 38 },
+    { id: 10, overall: 91, fluency: 87, pacing: 92, clarity: 90, confidence: 88, pronunciation: 90, date: "Today", duration: 45 },
+  ];
+
+  DIMS = [
+    { key: "fluency", name: "Fluency", color: "#7C3AED" },
+    { key: "pacing", name: "Pacing", color: "#2563EB" },
+    { key: "clarity", name: "Clarity", color: "#059669" },
+    { key: "confidence", name: "Confidence", color: "#EA580C" },
+    { key: "pronunciation", name: "Pronunc.", color: "#DB2777" },
+  ];
+
+  overallColor(s) {
+    if (s >= 85) return "#059669";
+    if (s >= 70) return "#16A34A";
+    if (s >= 55) return "#D97706";
+    return "#E11D48";
+  }
+
+  renderVals() {
+    const L = 44, R = 904, T = 30, B = 278, dMin = 60, dMax = 95;
+    const n = this.SESSIONS.length;
+    const px = (i) => L + (i / (n - 1)) * (R - L);
+    const py = (v) => B - ((v - dMin) / (dMax - dMin)) * (B - T);
+
+    const poly = (key) => this.SESSIONS.map((s, i) => `${px(i).toFixed(1)},${py(s[key]).toFixed(1)}`).join(" ");
+    const overallLine = poly("overall"), fluencyLine = poly("fluency"), pacingLine = poly("pacing");
+    const overallArea = `M ${L} ${B} ` + this.SESSIONS.map((s, i) => `L ${px(i).toFixed(1)} ${py(s.overall).toFixed(1)}`).join(" ") + ` L ${R} ${B} Z`;
+
+    const milestoneIdx = { 3: 1, 9: 1 }; // index 3 (#4), index 9 (#10)
+    const overallDots = this.SESSIONS.map((s, i) => {
+      const big = milestoneIdx[i];
+      return { x: px(i).toFixed(1), y: py(s.overall).toFixed(1), r: big ? 6 : 4, fill: big ? "#F0A020" : "#7C3AED", sw: big ? 2.5 : 1.5 };
+    });
+    const mstoneMarks = [{ x: px(3).toFixed(1), label: "Level Up" }, { x: px(9).toFixed(1), label: "Personal Best" }];
+
+    const gridVals = [60, 70, 80, 90];
+    const grid = gridVals.map((v) => ({ y: py(v).toFixed(1) }));
+    const ylabels = gridVals.map((v) => ({ y: (py(v) + 3).toFixed(1), v }));
+    const xlabels = this.SESSIONS.map((s, i) => ({ x: px(i).toFixed(1), v: "#" + s.id }));
+
+    const sessions = this.SESSIONS.slice().reverse().map((s) => ({
+      id: s.id, date: s.date, duration: s.duration, overall: s.overall,
+      overallStyle: { color: this.overallColor(s.overall) },
+      dims: this.DIMS.map((d) => ({ name: d.name, val: s[d.key], style: { color: d.color } })),
+    }));
+
+    return { overallLine, fluencyLine, pacingLine, overallArea, overallDots, mstoneMarks, grid, ylabels, xlabels, sessions };
+  }
+}
+</script>
+</body>
+</html>

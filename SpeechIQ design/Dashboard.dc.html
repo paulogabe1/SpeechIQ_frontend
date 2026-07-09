@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+.page{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--brand:#7C3AED;--brand2:#2563EB;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+.mono{font-family:'Geist Mono','SF Mono',monospace;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.wrap{max-width:1140px;margin:0 auto;padding:28px 32px 72px}
+a{color:var(--brand);text-decoration:none}
+a:hover{color:#6D28D9}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.pad{padding:22px}
+.pad24{padding:24px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--faint)}
+.h-sec{font-size:16px;font-weight:600;letter-spacing:-0.02em}
+.sub{color:var(--muted)}
+/* header */
+.dash-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:24px}
+.greet{font-size:30px;font-weight:600;letter-spacing:-0.03em;margin:8px 0 6px}
+.greet-sub{font-size:14.5px;color:var(--muted)}
+.greet-sub b{color:var(--ink);font-weight:600}
+.head-right{display:flex;align-items:center;gap:12px}
+.streak{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:#EA7317;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;box-shadow:0 1px 2px rgba(20,20,40,0.05)}
+.streak .lucide{width:16px;height:16px;color:#EA7317}
+.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#8B3FF0,#2F6BF0);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px}
+/* grid */
+.dash-grid{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;align-items:start}
+.col{display:flex;flex-direction:column;gap:16px}
+/* practice hero */
+.practice{display:flex;align-items:center;gap:22px;width:100%;text-align:left;border:none;cursor:pointer;font-family:inherit;border-radius:18px;padding:26px 28px;color:#fff;background:linear-gradient(135deg,#7C3AED 0%,#2563EB 100%);box-shadow:0 12px 30px -10px rgba(80,50,220,0.5);transition:transform .14s,box-shadow .14s}
+.practice:hover{transform:translateY(-2px);box-shadow:0 18px 38px -12px rgba(80,50,220,0.55)}
+.practice-ic{width:60px;height:60px;border-radius:16px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.practice-ic .lucide{width:28px;height:28px}
+.practice-eye{font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:rgba(255,255,255,0.75)}
+.practice-t{font-size:21px;font-weight:600;letter-spacing:-0.02em;margin-top:3px}
+.practice-d{font-size:13.5px;color:rgba(255,255,255,0.8);margin-top:4px}
+.practice-d b{color:#fff;font-weight:600}
+.practice-arrow{margin-left:auto;flex-shrink:0}
+.practice-arrow .lucide{width:24px;height:24px;color:rgba(255,255,255,0.85);transition:transform .14s}
+.practice:hover .practice-arrow .lucide{transform:translateX(4px)}
+/* section header */
+.sec-h{display:flex;align-items:center;gap:9px;margin-bottom:16px}
+.sec-h .lucide{width:17px;height:17px;color:var(--brand)}
+.chip-ai{margin-left:auto;font-size:11px;font-weight:600;color:var(--brand);background:#F3ECFD;border-radius:999px;padding:4px 10px;letter-spacing:0.02em}
+/* today's focus */
+.focus-box{background:linear-gradient(135deg,#FAF8FE,#F4F7FE);border:1px solid #EBE7F8;border-radius:14px;padding:20px}
+.focus-t{font-size:16px;font-weight:600;margin-bottom:16px}
+.focus-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.fstat{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 8px}
+.fstat-lab{font-size:11px;color:var(--muted);font-weight:500}
+.fstat-val{font-size:26px;font-weight:600;letter-spacing:-0.02em;margin:4px 0 2px}
+.fstat-unit{font-size:10.5px;color:var(--faint);font-weight:500}
+.btn-solid{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font-family:inherit;font-size:14px;font-weight:600;border:none;border-radius:12px;padding:12px;cursor:pointer;background:var(--ink);color:#fff;transition:background .14s}
+.btn-solid:hover{background:#000}
+.btn-solid .lucide{width:16px;height:16px}
+/* quick actions */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.qa{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;cursor:pointer;font-family:inherit;transition:border-color .14s,transform .14s}
+.qa:hover{border-color:#D8D2EC;transform:translateY(-2px)}
+.qa-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.qa-ic .lucide{width:20px;height:20px}
+.qa-ic.purple{background:#F3ECFD;color:var(--brand)}
+.qa-ic.emerald{background:#E3F5EC;color:#0E9F6E}
+.qa-t{font-size:15px;font-weight:600}
+.qa-d{font-size:12.5px;color:var(--muted);margin-top:3px}
+.qa-meta{font-size:12px;font-weight:600;margin-top:12px}
+.qa-meta.purple{color:var(--brand)}
+.qa-tag{display:inline-block;font-size:11px;font-weight:600;color:#0E9F6E;background:#E3F5EC;border-radius:999px;padding:3px 9px;margin-top:12px}
+/* level ring */
+.lvl-card{display:flex;flex-direction:column;align-items:center;text-align:center}
+.ring-wrap{position:relative;width:132px;height:132px;margin:4px 0 6px}
+.ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-lvl{font-size:38px;font-weight:600;letter-spacing:-0.03em;line-height:1}
+.ring-lab{font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint);margin-top:2px}
+.xp-line{font-size:13px;color:var(--muted);margin-top:6px}
+.xp-line b{color:var(--ink);font-weight:600}
+.xp-bar{width:100%;height:8px;background:var(--line2);border-radius:99px;overflow:hidden;margin:14px 0 8px}
+.xp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#8B3FF0,#2F6BF0)}
+.xp-next{font-size:12px;color:var(--faint);font-weight:500}
+/* forecast */
+.fc-row{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.fc-lab{font-size:12px;color:var(--muted);font-weight:500}
+.fc-num{font-size:38px;font-weight:600;letter-spacing:-0.03em;line-height:1.05}
+.fc-num.up{color:#15864B}
+.fc-mid{display:flex;align-items:center;gap:6px;color:#7ABF9A}
+.fc-mid .lucide{width:18px;height:18px}
+.fc-chip{display:inline-block;font-size:11px;font-weight:600;color:#15864B;background:#E4F3EA;border-radius:999px;padding:3px 8px;margin-top:6px}
+.fc-foot{margin-top:16px;padding-top:16px;border-top:1px solid var(--line2);font-size:12.5px;color:var(--muted)}
+.fc-foot b{color:#15864B;font-weight:600}
+/* achievements */
+.ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ach{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 10px}
+.ach-ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;background:#F4EEFB;color:#7C3AED}
+.ach-ic .lucide{width:19px;height:19px}
+.ach-t{font-size:12.5px;font-weight:600}
+.ach-d{font-size:11px;color:var(--muted);margin-top:2px}
+/* sidebar */
+.shell{display:flex;min-height:100vh}
+.appnav{width:256px;flex-shrink:0;background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.main{flex:1;min-width:0}
+.nbrand{display:flex;align-items:center;gap:11px;padding:24px 22px 18px}
+.nlogo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#7C3AED,#2563EB);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px -4px rgba(90,50,220,.5)}
+.nlogo .lucide{width:19px;height:19px;color:#fff}
+.nword{font-size:18px;font-weight:600;letter-spacing:-0.03em}
+.nword span{color:var(--brand)}
+.nbody{flex:1;padding:6px 14px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.neye{font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;color:var(--faint);padding:16px 10px 7px}
+.nitem{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:11px;cursor:pointer;border:none;background:none;font-family:inherit;width:100%;text-align:left;color:var(--muted);transition:background .13s,color .13s}
+.nitem .lucide{width:18px;height:18px;flex-shrink:0;color:var(--faint);transition:color .13s}
+.nitem span{font-size:14px;font-weight:500;letter-spacing:-0.01em}
+.nitem:hover{background:var(--line2);color:var(--ink2)}
+.nitem:hover .lucide{color:var(--muted)}
+.nitem.non{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(20,20,40,.05),0 0 0 1px var(--line);position:relative}
+.nitem.non::before{content:"";position:absolute;left:-14px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,#7C3AED,#2563EB)}
+.nitem.non .lucide{color:var(--brand)}
+.nitem.non span{font-weight:600}
+.ncta{display:flex;align-items:center;gap:11px;margin:4px 0 2px;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,#7C3AED,#2563EB);color:#fff;border:none;font-family:inherit;cursor:pointer;width:100%;box-shadow:0 8px 18px -6px rgba(90,50,220,.5);transition:transform .13s,box-shadow .13s}
+.ncta:hover{transform:translateY(-1px);box-shadow:0 12px 22px -6px rgba(90,50,220,.55)}
+.ncta .lucide{width:18px;height:18px}
+.ncta-t{font-size:14px;font-weight:600}
+.ncta-k{margin-left:auto;font-size:11px;font-weight:500;color:rgba(255,255,255,.72)}
+.nfoot{padding:12px 14px 16px;border-top:1px solid var(--line)}
+.nuser{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:12px;cursor:pointer;transition:background .13s}
+.nuser:hover{background:var(--line2)}
+.nav-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8B3FF0,#2F6BF0);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;flex-shrink:0}
+.nu-name{font-size:13.5px;font-weight:600;line-height:1.2}
+.nu-meta{font-size:11.5px;color:var(--muted);margin-top:1px}
+.nchev{margin-left:auto;color:var(--faint)}
+.nchev .lucide{width:16px;height:16px}
+.nupsell{margin:10px 4px 4px;padding:15px 16px;border-radius:14px;background:linear-gradient(140deg,#1B1730,#2A2350);color:#fff;position:relative;overflow:hidden}
+.nupsell .nglow{position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(140,90,255,.55),transparent 70%)}
+.nup-eye{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#C9B6FF;display:flex;align-items:center;gap:6px}
+.nup-eye .lucide{width:13px;height:13px}
+.nup-t{font-size:14px;font-weight:600;margin:7px 0 3px;letter-spacing:-0.01em}
+.nup-d{font-size:11.5px;color:rgba(255,255,255,.7);line-height:1.4}
+.nup-btn{margin-top:12px;width:100%;border:none;font-family:inherit;font-size:12.5px;font-weight:600;color:#1B1730;background:#fff;border-radius:9px;padding:8px;cursor:pointer}
+</style>
+</helmet>
+<div class="page"><div class="shell">
+<dc-import name="SideNav" active="home" plan="free" hint-size="256px,100%"></dc-import>
+<div class="main"><div class="wrap">
+
+<div class="dash-head">
+<div><div class="eyebrow">{{ today }}</div><h1 class="greet">Good morning, Alex</h1><div class="greet-sub">You're on a <b>7-day streak</b> — keep it going.</div></div>
+<div class="head-right"><sc-if value="{{ gamified }}" hint-placeholder-val="{{ true }}"><span class="streak"><i data-lucide="flame"></i> 7 days</span></sc-if><div class="avatar">A</div></div>
+</div>
+
+<div class="dash-grid">
+<div class="col">
+
+<button class="practice">
+<div class="practice-ic"><i data-lucide="mic"></i></div>
+<div><div class="practice-eye">Practice now</div><div class="practice-t">Record &amp; analyze your speech</div><sc-if value="{{ gamified }}" hint-placeholder-val="{{ true }}"><div class="practice-d">Earn <b>+50 XP</b> for every session</div></sc-if></div>
+<span class="practice-arrow"><i data-lucide="arrow-right"></i></span>
+</button>
+
+<div class="card pad24">
+<div class="sec-h"><i data-lucide="sparkles"></i><span class="h-sec">Today's focus</span><span class="chip-ai">AI Coach</span></div>
+<div class="focus-box">
+<div class="focus-t">Reduce long pauses</div>
+<div class="focus-stats">
+<div class="fstat"><div class="fstat-lab">Detected</div><div class="fstat-val mono" style="color:#E11D48">8</div><div class="fstat-unit">pauses &gt;1s</div></div>
+<div class="fstat"><div class="fstat-lab">Target</div><div class="fstat-val mono" style="color:#15864B">4</div><div class="fstat-unit">pauses &gt;1s</div></div>
+<div class="fstat"><div class="fstat-lab">Impact</div><div class="fstat-val mono" style="color:var(--brand)">+7</div><div class="fstat-unit">fluency pts</div></div>
+</div>
+<button class="btn-solid">Start recommended module <i data-lucide="arrow-right"></i></button>
+</div>
+</div>
+
+<div class="quick">
+<button class="qa"><div class="qa-ic purple"><i data-lucide="graduation-cap"></i></div><div class="qa-t">Continue learning</div><div class="qa-d">Articulation · Lesson 4 of 5</div><div class="qa-meta purple">Last score 82 · Goal 85</div></button>
+<button class="qa"><div class="qa-ic emerald"><i data-lucide="wand-sparkles"></i></div><div class="qa-t">Voice Lab</div><div class="qa-d">Generate with your voice</div><span class="qa-tag">Premium</span></button>
+</div>
+
+</div>
+<div class="col">
+
+<div class="card pad24 lvl-card">
+<div class="sec-h" style="width:100%;margin-bottom:8px"><i data-lucide="trophy" style="color:#EA7317"></i><span class="h-sec">Your level</span></div>
+<div class="ring-wrap">
+<svg width="132" height="132" viewBox="0 0 132 132" data-om-raster="true">
+<circle cx="66" cy="66" r="54" fill="none" stroke="#EEEDF3" stroke-width="10"/>
+<circle cx="66" cy="66" r="54" fill="none" stroke="url(#ringg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="{{ ringDash }}" stroke-dashoffset="{{ ringOffset }}" transform="rotate(-90 66 66)"/>
+<defs><linearGradient id="ringg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8B3FF0"/><stop offset="100%" stop-color="#2F6BF0"/></linearGradient></defs>
+</svg>
+<div class="ring-num"><div class="ring-lvl mono">12</div><div class="ring-lab">Level</div></div>
+</div>
+<div class="xp-line"><b class="mono">2,450</b> / <span class="mono">3,000</span> XP</div>
+<div class="xp-bar"><div class="xp-fill" style="{{ xpFillStyle }}"></div></div>
+<div class="xp-next mono">550 XP to Level 13</div>
+</div>
+
+<div class="card pad24">
+<div class="sec-h"><i data-lucide="trending-up" style="color:#15864B"></i><span class="h-sec">Improvement forecast</span></div>
+<div class="fc-row">
+<div><div class="fc-lab">Current fluency</div><div class="fc-num mono">82</div></div>
+<div class="fc-mid"><span style="width:22px;height:1px;background:#BFE0CD;display:block"></span><i data-lucide="arrow-right"></i></div>
+<div style="text-align:right"><div class="fc-lab">In 2 weeks</div><div class="fc-num up mono">88</div><span class="fc-chip">+6 pts</span></div>
+</div>
+<div class="fc-foot">Improving <b>12% faster</b> than last month.</div>
+</div>
+
+<sc-if value="{{ gamified }}" hint-placeholder-val="{{ true }}">
+<div class="card pad24">
+<div class="sec-h"><i data-lucide="award" style="color:#EA7317"></i><span class="h-sec">Recent achievements</span></div>
+<div class="ach-grid">
+<sc-for list="{{ achievements }}" as="a" hint-placeholder-count="4"><div class="ach {{ a.cls }}"><div class="ach-ic"><i data-lucide="{{ a.icon }}"></i></div><div class="ach-t">{{ a.title }}</div><div class="ach-d">{{ a.desc }}</div></div></sc-for>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+
+</div></div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:820},&quot;gamified&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Display&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+  icons() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+
+  renderVals() {
+    const gamified = this.props.gamified ?? true;
+    const xp = 2450, nextXp = 3000;
+    const pct = xp / nextXp;
+    const r = 54, circ = 2 * Math.PI * r;
+    return {
+      today: "Tuesday · Jul 8",
+      gamified,
+      xpFillStyle: { width: (pct * 100).toFixed(1) + "%" },
+      ringDash: circ.toFixed(1),
+      ringOffset: (circ * (1 - pct)).toFixed(1),
+      achievements: [
+        { icon: "flame", title: "Week Warrior", desc: "7-day streak", cls: "ach-amber" },
+        { icon: "target", title: "Perfect Score", desc: "100% fluency", cls: "ach-purple" },
+        { icon: "zap", title: "Speed Demon", desc: "Perfect pacing", cls: "ach-blue" },
+        { icon: "trophy", title: "Level 10", desc: "Reached level 10", cls: "ach-emerald" },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

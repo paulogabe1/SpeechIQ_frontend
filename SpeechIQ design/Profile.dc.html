@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+.page{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--brand:#7C3AED;--brand2:#2563EB;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+.mono{font-family:'Geist Mono','SF Mono',monospace;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 32px 72px}
+a{color:var(--brand);text-decoration:none}
+a:hover{color:#6D28D9}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.h-sec{font-size:17px;font-weight:600;letter-spacing:-0.02em}
+/* header hero */
+.hero{position:relative;overflow:hidden;border-radius:20px;padding:30px 32px;color:#fff;background:linear-gradient(135deg,#7C3AED 0%,#2563EB 100%);box-shadow:0 14px 34px -12px rgba(80,50,220,0.5)}
+.hero-blob{position:absolute;border-radius:50%;background:rgba(255,255,255,0.08)}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;position:relative;z-index:1}
+.hero-name{font-size:28px;font-weight:600;letter-spacing:-0.03em}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.82);margin-top:5px}
+.hero-av{width:66px;height:66px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;font-weight:600;backdrop-filter:blur(4px)}
+.lvl-box{position:relative;z-index:1;background:rgba(255,255,255,0.12);backdrop-filter:blur(6px);border-radius:14px;padding:20px 22px;margin-top:24px}
+.lvl-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.lvl-name{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600}
+.lvl-name .lucide{width:19px;height:19px;color:#FCD34D}
+.lvl-xp{font-size:13px;color:rgba(255,255,255,0.85)}
+.lvl-track{height:10px;background:rgba(255,255,255,0.22);border-radius:99px;overflow:hidden}
+.lvl-fill{height:100%;background:#fff;border-radius:99px}
+.lvl-next{font-size:12.5px;color:rgba(255,255,255,0.82);margin-top:10px}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
+.stat{display:flex;align-items:center;gap:14px;padding:20px}
+.stat-ic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-ic .lucide{width:22px;height:22px}
+.stat-ic.amber{background:#FBEFD4;color:#D97706}
+.stat-ic.orange{background:#FDE6D6;color:#EA580C}
+.stat-ic.blue{background:#DDE9FD;color:#2563EB}
+.stat-ic.purple{background:#EEE4FB;color:#7C3AED}
+.stat-lab{font-size:12.5px;color:var(--muted);font-weight:500}
+.stat-val{font-size:23px;font-weight:600;letter-spacing:-0.02em;margin-top:2px}
+/* achievements */
+.ach-card{margin-top:20px;padding:26px 28px}
+.ach-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.ach-meta{font-size:13px;color:var(--muted);font-weight:500}
+.ach-meta b{color:var(--ink);font-weight:600}
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ach{border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;gap:14px;align-items:flex-start}
+.ach.locked{opacity:0.72;background:#FBFBFC}
+.ach-ic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;background:linear-gradient(135deg,#FBBF24,#EA7317)}
+.ach.locked .ach-ic{background:#EDEDF1;color:#AEAEBA}
+.ach-ic .lucide{width:22px;height:22px}
+.ach-t{font-size:14.5px;font-weight:600}
+.ach-d{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+.ach-status{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;margin-top:9px}
+.ach-status.earned{color:#059669}
+.ach-status.lock{color:var(--faint)}
+.ach-status .lucide{width:13px;height:13px}
+.shell{display:flex;min-height:100vh}
+.main{flex:1;min-width:0}
+</style>
+</helmet>
+<div class="page"><div class="shell">
+<dc-import name="SideNav" active="profile" plan="free" hint-size="256px,100%"></dc-import>
+<div class="main"><div class="wrap">
+
+<div class="hero">
+<div class="hero-blob" style="width:150px;height:150px;top:-50px;right:-30px"></div>
+<div class="hero-blob" style="width:90px;height:90px;bottom:-30px;right:120px"></div>
+<div class="hero-top">
+<div><div class="hero-name">Alex Morgan</div><div class="hero-sub">Keep up the great work.</div></div>
+<div class="hero-av">A</div>
+</div>
+<div class="lvl-box">
+<div class="lvl-row"><div class="lvl-name"><i data-lucide="trophy"></i> Level 12</div><div class="lvl-xp mono">2,450 / 3,000 XP</div></div>
+<div class="lvl-track"><div class="lvl-fill" style="{{ xpStyle }}"></div></div>
+<div class="lvl-next mono">550 XP to Level 13</div>
+</div>
+</div>
+
+<div class="stats">
+<div class="card stat"><div class="stat-ic amber"><i data-lucide="zap"></i></div><div><div class="stat-lab">Total XP</div><div class="stat-val mono">14,250</div></div></div>
+<div class="card stat"><div class="stat-ic orange"><i data-lucide="flame"></i></div><div><div class="stat-lab">Longest streak</div><div class="stat-val mono">15<span style="font-size:14px;color:var(--faint);font-weight:500"> days</span></div></div></div>
+<div class="card stat"><div class="stat-ic blue"><i data-lucide="clock"></i></div><div><div class="stat-lab">Hours practiced</div><div class="stat-val mono">12.5<span style="font-size:14px;color:var(--faint);font-weight:500">h</span></div></div></div>
+<div class="card stat"><div class="stat-ic purple"><i data-lucide="mic"></i></div><div><div class="stat-lab">Total sessions</div><div class="stat-val mono">47</div></div></div>
+</div>
+
+<div class="card ach-card">
+<div class="ach-head"><span class="h-sec">Achievements</span><span class="ach-meta"><b>{{ earnedCount }}</b> of {{ totalCount }} unlocked</span></div>
+<div class="ach-grid">
+<sc-for list="{{ achievements }}" as="a" hint-placeholder-count="9">
+<div class="ach {{ a.cls }}">
+<div class="ach-ic"><i data-lucide="{{ a.icon }}"></i></div>
+<div><div class="ach-t">{{ a.title }}</div><div class="ach-d">{{ a.desc }}</div>
+<sc-if value="{{ a.earned }}" hint-placeholder-val="{{ true }}"><div class="ach-status earned"><i data-lucide="check"></i> Earned {{ a.date }}</div></sc-if>
+<sc-if value="{{ a.locked }}" hint-placeholder-val="{{ false }}"><div class="ach-status lock"><i data-lucide="lock"></i> Locked</div></sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div></div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+  icons() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+
+  ACH = [
+    { icon: "flame", title: "Week Warrior", desc: "7-day streak", earned: true, date: "today" },
+    { icon: "target", title: "Perfect Score", desc: "100% in any metric", earned: true, date: "2 days ago" },
+    { icon: "zap", title: "Speed Demon", desc: "Perfect pacing score", earned: true, date: "3 days ago" },
+    { icon: "trophy", title: "Level 10", desc: "Reached level 10", earned: true, date: "5 days ago" },
+    { icon: "dumbbell", title: "Marathon", desc: "Practice for 1 hour straight", earned: true, date: "1 week ago" },
+    { icon: "graduation-cap", title: "Scholar", desc: "Complete 50 sessions", earned: false },
+    { icon: "star", title: "Rising Star", desc: "Improve by 20 points", earned: true, date: "2 weeks ago" },
+    { icon: "crown", title: "Consistency King", desc: "30-day streak", earned: false },
+    { icon: "gem", title: "Elite Speaker", desc: "Reach level 20", earned: false },
+  ];
+
+  renderVals() {
+    const achievements = this.ACH.map((a) => ({
+      ...a,
+      locked: !a.earned,
+      cls: a.earned ? "earned" : "locked",
+    }));
+    return {
+      xpStyle: { width: (2450 / 3000 * 100).toFixed(1) + "%" },
+      achievements,
+      earnedCount: this.ACH.filter((a) => a.earned).length,
+      totalCount: this.ACH.length,
+    };
+  }
+}
+</script>
+</body>
+</html>

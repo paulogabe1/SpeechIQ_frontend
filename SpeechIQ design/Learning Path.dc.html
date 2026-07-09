@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+.page{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--brand:#7C3AED;--brand2:#2563EB;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+.mono{font-family:'Geist Mono','SF Mono',monospace;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.wrap{max-width:760px;margin:0 auto;padding:28px 32px 72px}
+a{color:var(--brand);text-decoration:none}
+a:hover{color:#6D28D9}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.h1{font-size:30px;font-weight:600;letter-spacing:-0.03em;margin:0 0 6px}
+.h1sub{font-size:14.5px;color:var(--muted)}
+/* recommended banner */
+.reco{position:relative;overflow:hidden;border-radius:18px;padding:26px 28px;color:#fff;background:linear-gradient(135deg,#7C3AED 0%,#2563EB 100%);box-shadow:0 12px 30px -12px rgba(80,50,220,0.5);margin:22px 0 28px}
+.reco-blob{position:absolute;border-radius:50%;background:rgba(255,255,255,0.09)}
+.reco-eye{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.82)}
+.reco-eye .lucide{width:15px;height:15px;color:#FCD34D}
+.reco-t{font-size:23px;font-weight:600;letter-spacing:-0.02em;margin:10px 0 6px}
+.reco-d{font-size:13.5px;line-height:1.5;color:rgba(255,255,255,0.85);max-width:520px}
+.reco-chips{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.reco-chip{font-size:12px;font-weight:600;background:rgba(255,255,255,0.16);border-radius:999px;padding:6px 13px;backdrop-filter:blur(4px)}
+/* unit */
+.unit{margin-bottom:22px}
+.unit-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-radius:16px 16px 0 0;border:1px solid var(--line);border-bottom:none;background:var(--card)}
+.unit-accent{display:flex;align-items:center;gap:13px}
+.unit-dot{width:10px;height:44px;border-radius:99px;flex-shrink:0}
+.unit-eye{font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--faint)}
+.unit-t{font-size:17px;font-weight:600;letter-spacing:-0.01em;margin-top:2px}
+.unit-count{text-align:right}
+.unit-num{font-size:22px;font-weight:600;letter-spacing:-0.02em}
+.unit-num span{font-size:13px;font-weight:500;color:var(--faint)}
+.unit-clab{font-size:11px;color:var(--muted);font-weight:500}
+.unit-track{height:6px;background:var(--line2);position:relative;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.unit-fill{position:absolute;left:0;top:0;bottom:0}
+.path-shell{border:1px solid var(--line);border-top:none;border-radius:0 0 16px 16px;background:linear-gradient(180deg,#FAFAFC,#FFFFFF);padding:20px 0 24px}
+.path{position:relative;width:660px;margin:0 auto}
+.path .path-line{position:absolute;top:0;left:0;pointer-events:none}
+.node{position:absolute;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-family:inherit;transition:transform .14s}
+.node:hover{transform:scale(1.08)}
+.node.locked{cursor:not-allowed}
+.node.locked:hover{transform:none}
+.node .lucide{width:26px;height:26px}
+.node.completed{color:#fff;box-shadow:0 8px 18px -6px rgba(20,20,40,0.28)}
+.node.current{background:linear-gradient(135deg,#7C3AED,#2563EB);color:#fff;box-shadow:0 10px 22px -6px rgba(80,50,220,0.55)}
+.node.current:before{content:"";position:absolute;inset:-6px;border-radius:50%;border:3px solid rgba(124,58,237,0.35);animation:ripple 1.8s ease-out infinite}
+@keyframes ripple{0%{transform:scale(1);opacity:0.7}100%{transform:scale(1.35);opacity:0}}
+.node.locked{background:#F1F1F5;color:#B7B7C2;box-shadow:none}
+.node-badge{position:absolute;top:-3px;right:-3px;width:20px;height:20px;border-radius:50%;background:#F59E0B;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:3}
+.node-lab{position:absolute;text-align:center;width:120px;font-size:12px;font-weight:600;transform:translateX(-50%)}
+.node-lab.locked{color:var(--faint);font-weight:500}
+.node-lab.completed{color:var(--ink2)}
+.node-lab.current{color:var(--brand)}
+.node-stars{position:absolute;transform:translateX(-50%);display:flex;gap:2px}
+.node-stars .lucide{width:12px;height:12px;color:#F59E0B;fill:#F59E0B}
+.startpill{position:absolute;transform:translateX(-50%);background:#fff;border:1.5px solid #C9B6F3;border-radius:10px;padding:4px 11px;box-shadow:0 6px 16px -6px rgba(80,50,220,0.4);font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--brand);animation:bob 1.6s ease-in-out infinite;white-space:nowrap}
+@keyframes bob{0%,100%{margin-top:0}50%{margin-top:-5px}}
+.unit-cont{width:660px;margin:16px auto 0}
+.cont-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:14px;font-weight:600;border:none;border-radius:12px;padding:13px;cursor:pointer;background:var(--brand);color:#fff;transition:background .14s}
+.cont-btn:hover{background:#6D28D9}
+.cont-btn .lucide{width:16px;height:16px}
+.shell{display:flex;min-height:100vh}
+.main{flex:1;min-width:0}
+</style>
+</helmet>
+<div class="page"><div class="shell">
+<dc-import name="SideNav" active="learn" plan="free" hint-size="256px,100%"></dc-import>
+<div class="main"><div class="wrap">
+<h1 class="h1">Learning Path</h1>
+<div class="h1sub">Progress through structured units to master your speech.</div>
+
+<div class="reco">
+<div class="reco-blob" style="width:130px;height:130px;top:-40px;right:-30px"></div>
+<div class="reco-blob" style="width:80px;height:80px;bottom:-24px;left:-16px"></div>
+<div style="position:relative;z-index:1">
+<div class="reco-eye"><i data-lucide="sparkles"></i> Recommended for you</div>
+<div class="reco-t">Pause Technique</div>
+<div class="reco-d">Based on your last analysis — reducing long pauses will boost your fluency by +7 points.</div>
+<div class="reco-chips"><span class="reco-chip">+7 Fluency pts</span><span class="reco-chip">Unit 2 · Lesson 2</span></div>
+</div>
+</div>
+
+<sc-for list="{{ units }}" as="u" hint-placeholder-count="4">
+<div class="unit">
+<div class="unit-head">
+<div class="unit-accent"><div class="unit-dot" style="{{ u.dotStyle }}"></div><div><div class="unit-eye">{{ u.title }}</div><div class="unit-t">{{ u.subtitle }}</div></div></div>
+<div class="unit-count"><div class="unit-num">{{ u.done }}<span>/{{ u.total }}</span></div><div class="unit-clab">lessons done</div></div>
+</div>
+<div class="unit-track"><div class="unit-fill" style="{{ u.fillStyle }}"></div></div>
+<div class="path-shell">
+<div class="path" style="{{ u.pathStyle }}">
+<svg class="path-line" width="660" height="{{ u.h }}" viewBox="0 0 660 {{ u.h }}"><polyline points="{{ u.line }}" fill="none" stroke="#E2E2EA" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"></polyline></svg>
+<sc-for list="{{ u.nodes }}" as="n" hint-placeholder-count="5">
+<sc-if value="{{ n.showStart }}" hint-placeholder-val="{{ false }}"><div class="startpill" style="{{ n.startStyle }}">Start</div></sc-if>
+<button class="node {{ n.cls }}" style="{{ n.nodeStyle }}"><i data-lucide="{{ n.icon }}"></i><sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}"><span class="node-badge">!</span></sc-if></button>
+<div class="node-lab {{ n.cls }}" style="{{ n.labStyle }}">{{ n.label }}</div>
+<sc-if value="{{ n.stars }}" hint-placeholder-val="{{ false }}"><div class="node-stars" style="{{ n.starStyle }}"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div></sc-if>
+</sc-for>
+</div>
+<sc-if value="{{ u.hasCurrent }}" hint-placeholder-val="{{ false }}"><div class="unit-cont"><button class="cont-btn">Continue unit <i data-lucide="arrow-right"></i></button></div></sc-if>
+</div>
+</div>
+</sc-for>
+
+</div></div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040,&quot;height&quot;:1400}}">
+class Component extends DCLogic {
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+  icons() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+
+  UNITS = [
+    { title: "Unit 1", subtitle: "Foundations of Clear Speech", color: "#059669", grad: ["#10B981", "#0D9488"],
+      lessons: [
+        { title: "Breathing Basics", status: "completed" },
+        { title: "Posture & Voice", status: "completed" },
+        { title: "Warm-Up Exercises", status: "completed" },
+        { title: "First Speech", status: "completed" },
+        { title: "Unit Review", status: "completed", type: "review" },
+      ] },
+    { title: "Unit 2", subtitle: "Pacing & Rhythm", color: "#2563EB", grad: ["#3B82F6", "#4F46E5"],
+      lessons: [
+        { title: "Natural Pace", status: "completed" },
+        { title: "Pause Technique", status: "current" },
+        { title: "Rhythm Patterns", status: "locked" },
+        { title: "Speech Flow", status: "locked" },
+        { title: "Pacing Challenge", status: "locked", type: "challenge" },
+      ] },
+    { title: "Unit 3", subtitle: "Articulation & Clarity", color: "#7C3AED", grad: ["#A855F7", "#7C3AED"],
+      lessons: [
+        { title: "Consonant Clarity", status: "locked" },
+        { title: "Vowel Shaping", status: "locked" },
+        { title: "Tongue Twisters", status: "locked" },
+        { title: "Minimal Pairs", status: "locked" },
+        { title: "Articulation Test", status: "locked", type: "review" },
+      ] },
+    { title: "Unit 4", subtitle: "Vocal Confidence", color: "#E11D48", grad: ["#F43F5E", "#DB2777"],
+      lessons: [
+        { title: "Projection Power", status: "locked" },
+        { title: "Authority Tone", status: "locked" },
+        { title: "Audience Control", status: "locked" },
+        { title: "Confidence Challenge", status: "locked", type: "challenge" },
+      ] },
+  ];
+
+  FRACS = [0.12, 0.40, 0.68, 0.47, 0.23];
+
+  renderVals() {
+    const trackW = 660, top0 = 46, gap = 126, r = 31;
+
+    const units = this.UNITS.map((u) => {
+      const n = u.lessons.length;
+      const h = top0 + (n - 1) * gap + 96;
+      const done = u.lessons.filter((l) => l.status === "completed").length;
+      const pts = [];
+      const nodes = u.lessons.map((l, i) => {
+        const cx = this.FRACS[i % this.FRACS.length] * trackW;
+        const cy = top0 + i * gap;
+        pts.push(`${cx.toFixed(0)},${cy.toFixed(0)}`);
+        const completed = l.status === "completed";
+        const current = l.status === "current";
+        const locked = l.status === "locked";
+        const icon = completed ? "check" : current ? "play" : (l.type ? "star" : "lock");
+        const nodeStyle = { left: (cx - r) + "px", top: (cy - r) + "px" };
+        if (completed) nodeStyle.background = `linear-gradient(135deg,${u.grad[0]},${u.grad[1]})`;
+        return {
+          cls: l.status,
+          icon,
+          label: l.title,
+          nodeStyle,
+          labStyle: { left: cx + "px", top: (cy + 38) + "px" },
+          stars: completed,
+          starStyle: { left: cx + "px", top: (cy + 60) + "px" },
+          showStart: current,
+          startStyle: { left: cx + "px", top: (cy - 52) + "px" },
+          badge: current,
+        };
+      });
+      return {
+        title: u.title, subtitle: u.subtitle,
+        dotStyle: { background: `linear-gradient(180deg,${u.grad[0]},${u.grad[1]})` },
+        done, total: n,
+        fillStyle: { width: (done / n * 100) + "%", background: `linear-gradient(90deg,${u.grad[0]},${u.grad[1]})` },
+        h,
+        pathStyle: { height: h + "px" },
+        line: pts.join(" "),
+        nodes,
+        hasCurrent: u.lessons.some((l) => l.status === "current"),
+      };
+    });
+
+    return { units };
+  }
+}
+</script>
+</body>
+</html>

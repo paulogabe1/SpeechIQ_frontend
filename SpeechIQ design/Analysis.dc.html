@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+.page{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--brand:#7C3AED;--brand2:#2563EB;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+.mono{font-family:'Geist Mono','SF Mono',monospace;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.wrap{max-width:1140px;margin:0 auto;padding:28px 32px 88px}
+a{color:var(--brand);text-decoration:none}
+a:hover{color:#6D28D9}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.pad{padding:24px}
+.pad28{padding:28px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--faint)}
+.sub{color:var(--muted)}
+.h-sec{font-size:17px;font-weight:600;letter-spacing:-0.02em}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.backlink{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;font-weight:500;background:none;border:none;cursor:pointer;padding:6px 0}
+.backlink:hover{color:var(--ink)}
+.backlink .lucide{width:16px;height:16px}
+.tactions{display:flex;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:13.5px;font-weight:500;border-radius:11px;padding:9px 15px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink2);transition:border-color .15s,background .15s}
+.btn:hover{border-color:#D6D6DE;background:#FCFCFD}
+.btn .lucide{width:15px;height:15px}
+.btn-primary{border:none;background:var(--ink);color:#fff}
+.btn-primary:hover{background:#000}
+/* hero */
+.hero{display:grid;grid-template-columns:300px 1fr;gap:0;overflow:hidden;padding:0}
+.hero-l{padding:30px 30px 28px;border-right:1px solid var(--line);position:relative}
+.hero-accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#8B3FF0,#2F6BF0)}
+.score-big{font-size:82px;font-weight:600;line-height:0.9;letter-spacing:-0.04em}
+.score-max{font-size:22px;color:var(--faint);font-weight:500}
+.grade{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:5px 11px;border-radius:999px;margin-top:16px}
+.delta{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#059669;margin-top:14px}
+.delta .lucide{width:14px;height:14px}
+.pct{font-size:12.5px;color:var(--muted);margin-top:10px}
+.pct b{color:var(--ink);font-weight:600}
+.hero-r{padding:26px 30px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.metric-mini{display:grid;grid-template-columns:78px 1fr auto;align-items:center;gap:14px;padding:8px 0}
+.mm-name{font-size:13.5px;font-weight:500}
+.mm-track{height:7px;background:var(--line2);border-radius:99px;position:relative;overflow:hidden}
+.mm-fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#8B3FF0,#2F6BF0)}
+.mm-ghost{position:absolute;top:0;bottom:0;border-radius:99px;background:#E3D9FB}
+.mm-val{font-size:13px;font-weight:600;min-width:30px;text-align:right}
+.mm-gain{font-size:11px;color:var(--brand);font-weight:500;min-width:26px;text-align:right}
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:16px}
+.stat{padding:18px 22px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat-lab{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--faint)}
+.stat-lab .lucide{width:13px;height:13px}
+.stat-val{font-size:26px;font-weight:600;margin-top:8px;letter-spacing:-0.02em}
+.stat-unit{font-size:13px;color:var(--faint);font-weight:500;margin-left:2px}
+.stat-note{font-size:11.5px;color:var(--muted);margin-top:3px}
+/* feedback */
+.grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:16px}
+.grid2b{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.fb-list{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+.fb-item{display:flex;gap:13px;align-items:flex-start}
+.fb-dot{margin-top:2px;width:24px;height:24px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--line2);color:var(--muted)}
+.fb-dot .lucide{width:14px;height:14px}
+.fb-txt{font-size:14.5px;line-height:1.55;color:var(--ink2)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:22px;border-top:1px solid var(--line2);padding-top:20px}
+.split-col{padding-right:20px}
+.split-col+.split-col{padding-left:22px;padding-right:0;border-left:1px solid var(--line2)}
+.split-h{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:12px}
+.split-h .lucide{width:15px;height:15px}
+.split-item{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.5;color:var(--ink2);padding:5px 0}
+.split-item .lucide{width:15px;height:15px;margin-top:2px;flex-shrink:0}
+/* coaching */
+.coach{background:linear-gradient(135deg,#211E3A 0%,#1A1830 100%);color:#EDEBF6;padding:0;overflow:hidden;position:relative;border:none}
+.coach-inner{padding:28px}
+.coach-top{display:flex;align-items:center;gap:11px;margin-bottom:20px}
+.coach-ic{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#8B3FF0,#2F6BF0);display:flex;align-items:center;justify-content:center;color:#fff}
+.coach-ic .lucide{width:19px;height:19px}
+.coach-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#A79FD6}
+.coach-title{font-size:19px;font-weight:600;letter-spacing:-0.02em;margin-top:1px}
+.coach-desc{font-size:14px;line-height:1.55;color:#B8B2D8;max-width:560px}
+.coach-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.cm{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:15px 17px}
+.cm-lab{font-size:11px;color:#A79FD6;font-weight:500;text-transform:uppercase;letter-spacing:0.04em}
+.cm-val{font-size:22px;font-weight:600;margin-top:7px;letter-spacing:-0.02em}
+.cm-val.up{color:#5FD99B}
+.coach-cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.coach-foot{font-size:13px;color:#B8B2D8}
+.coach-foot b{color:#fff;font-weight:600}
+.coach-foot .up{color:#5FD99B;font-weight:600}
+.coach-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#211E3A;font-family:inherit;font-weight:600;font-size:14px;border:none;border-radius:12px;padding:11px 20px;cursor:pointer;transition:transform .12s}
+.coach-btn:hover{transform:translateY(-1px)}
+.coach-btn .lucide{width:16px;height:16px}
+/* breakdown */
+.brk-row{display:grid;grid-template-columns:1fr;gap:6px;width:100%;text-align:left;background:none;border:none;border-radius:12px;padding:14px 14px;cursor:pointer;transition:background .14s;font-family:inherit}
+.brk-row:hover{background:#FAFAFC}
+.brk-top{display:flex;align-items:center;justify-content:space-between}
+.brk-name{display:flex;align-items:center;gap:9px;font-size:14.5px;font-weight:500}
+.brk-chip{font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:99px;letter-spacing:0.02em}
+.brk-right{display:flex;align-items:center;gap:12px}
+.brk-score{font-size:16px;font-weight:600}
+.brk-gain{font-size:11.5px;color:var(--brand);font-weight:500}
+.brk-chev{color:var(--faint);display:flex}
+.brk-chev .lucide{width:16px;height:16px}
+.brk-row:hover .brk-chev{color:var(--brand)}
+.brk-track{height:7px;background:var(--line2);border-radius:99px;position:relative;overflow:hidden;margin-top:2px}
+.brk-fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#8B3FF0,#2F6BF0)}
+.brk-ghost{position:absolute;top:0;bottom:0;border-radius:99px;background:#E3D9FB}
+.brk-meta{font-size:11.5px;color:var(--faint)}
+.divider-row{height:1px;background:var(--line2);margin:0 14px}
+/* distribution */
+.dist-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px}
+.chart-svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:20px;margin-top:14px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.leg-line{width:16px;height:3px;border-radius:2px}
+.dist-note{background:#FAF8FE;border:1px solid #EBE3FB;border-radius:12px;padding:14px 16px;margin-top:16px;display:flex;gap:11px;align-items:flex-start}
+.dist-note .lucide{width:18px;height:18px;color:var(--brand);margin-top:1px;flex-shrink:0}
+.dist-note-t{font-size:13.5px;font-weight:600;color:#4A2A87}
+.dist-note-d{font-size:13px;color:#6B5A8E;line-height:1.5;margin-top:3px}
+/* transcript */
+.tr-body{font-size:15px;line-height:1.7;color:var(--ink2);margin-top:16px}
+.tr-body .fill{background:#FBEEDB;color:#9A6410;border-radius:4px;padding:0 3px;font-weight:500}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:var(--ink2);background:var(--line2);border-radius:99px;padding:6px 12px}
+.pill .lucide{width:14px;height:14px;color:var(--faint)}
+.pill b{font-weight:600}
+/* radar */
+.radar-wrap{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:center;margin-top:8px}
+.rl{display:flex;flex-direction:column;gap:2px}
+.rl-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line2)}
+.rl-item:last-child{border-bottom:none}
+.rl-name{font-size:13.5px;font-weight:500}
+.rl-val{font-size:14px;font-weight:600}
+/* tips */
+.tips{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.tip{border:1px solid var(--line);border-radius:14px;padding:18px}
+.tip-h{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin-bottom:12px}
+.tip-h .lucide{width:16px;height:16px;color:var(--brand)}
+.tip li{font-size:13.5px;line-height:1.5;color:var(--ink2);margin-bottom:7px;list-style:none;position:relative;padding-left:16px}
+.tip li:before{content:"";position:absolute;left:2px;top:8px;width:4px;height:4px;border-radius:99px;background:var(--faint)}
+.tip ul{margin:0;padding:0}
+/* actions */
+.foot{display:flex;gap:14px;margin-top:24px}
+.foot .btn{flex:1;justify-content:center;padding:14px}
+.xp-chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#7A5B12;background:#FBEFD0;border-radius:99px;padding:5px 12px}
+.xp-chip .lucide{width:14px;height:14px}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(20,18,28,0.5);backdrop-filter:blur(3px);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:48px 20px;overflow-y:auto}
+.modal{background:#fff;border-radius:20px;max-width:640px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.25)}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;padding:24px 26px 20px;border-bottom:1px solid var(--line2)}
+.modal-close{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.modal-close:hover{background:#FAFAFC;color:var(--ink)}
+.modal-close .lucide{width:16px;height:16px}
+.mb-body{padding:24px 26px}
+.mb-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line2);font-size:14px}
+.mb-row:last-child{border-bottom:none}
+.mb-ideal{color:var(--muted);font-size:13px}
+.mb-comp{font-weight:600}
+.section-gap{margin-top:16px}
+.defn{margin-top:16px;padding-top:16px;border-top:1px solid var(--line2)}
+.defn-lab{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.defn-txt{font-size:13px;line-height:1.55;color:var(--muted)}
+.defn-txt b{color:var(--ink2);font-weight:600}
+.shell{display:flex;min-height:100vh}
+.main{flex:1;min-width:0}
+</style>
+</helmet>
+<div class="page"><div class="shell">
+<dc-import name="SideNav" active="practice" plan="free" hint-size="256px,100%"></dc-import>
+<div class="main"><div class="wrap">
+<sc-if value="{{ selected }}" hint-placeholder-val="{{ false }}">
+<div class="overlay" onClick="{{ closeModal }}"><div class="modal" onClick="{{ stop }}">
+<div class="modal-head"><div><div class="eyebrow">Metric detail</div><div class="h-sec" style="font-size:22px;margin-top:5px">{{ sel.name }}</div><div class="sub" style="font-size:13.5px;margin-top:4px">{{ sel.blurb }}</div></div><button class="modal-close" onClick="{{ closeModal }}"><i data-lucide="x"></i></button></div>
+<div class="mb-body">
+<div style="display:flex;align-items:flex-end;gap:14px;margin-bottom:6px"><div class="score-big" style="font-size:52px">{{ sel.score }}</div><div style="padding-bottom:9px"><span class="brk-chip" style="{{ sel.chipStyle }}">{{ sel.grade }}</span><div class="brk-gain" style="margin-top:6px">Potential {{ sel.potential }} · +{{ sel.gain }} available</div></div></div>
+<div class="defn" style="margin-top:16px;padding-top:16px"><div class="defn-lab">What it measures</div><div class="defn-txt">{{ sel.definition }}</div></div>
+<div class="defn"><div class="defn-lab">Your reading</div><p class="fb-txt" style="margin:0">{{ sel.detail }}</p></div>
+<div class="eyebrow" style="margin:20px 0 6px">Measured vs ideal</div>
+<sc-for list="{{ sel.rows }}" as="r" hint-placeholder-count="3"><div class="mb-row"><span>{{ r.label }}</span><span><span class="mb-comp" style="{{ r.valStyle }}">{{ r.value }}</span> <span class="mb-ideal">/ {{ r.ideal }}</span></span></div></sc-for>
+</div>
+</div></div>
+</sc-if>
+<div class="topbar">
+<button class="backlink" onClick="{{ onBack }}"><i data-lucide="arrow-left"></i> Back to Dashboard</button>
+<div class="tactions"><button class="btn"><i data-lucide="share-2"></i> Share</button><button class="btn"><i data-lucide="rotate-ccw"></i> Practice again</button></div>
+</div>
+
+<div class="card hero">
+<div class="hero-l"><div class="hero-accent"></div>
+<div class="eyebrow">Overall score</div>
+<div style="display:flex;align-items:baseline;gap:4px;margin-top:12px"><span class="score-big mono">{{ overall }}</span><span class="score-max mono">/100</span></div>
+<div><span class="grade" style="{{ gradeStyle }}"><i data-lucide="award"></i>{{ gradeLabel }}</span></div>
+<div class="delta"><i data-lucide="trending-up"></i> +6 vs last session</div>
+<div class="pct">You're in the <b>top 22%</b> of speakers</div>
+<sc-if value="{{ gamified }}" hint-placeholder-val="{{ true }}"><div style="margin-top:18px"><span class="xp-chip"><i data-lucide="zap"></i> +50 XP earned</span></div></sc-if>
+</div>
+<div class="hero-r">
+<div class="eyebrow" style="margin-bottom:6px">By dimension</div>
+<sc-for list="{{ metrics }}" as="m" hint-placeholder-count="5"><div class="metric-mini"><span class="mm-name">{{ m.name }}</span><div class="mm-track"><div class="mm-ghost" style="{{ m.ghostStyle }}"></div><div class="mm-fill" style="{{ m.fillStyle }}"></div></div><span class="mm-val" style="{{ m.scoreStyle }}">{{ m.score }}</span></div></sc-for>
+</div>
+</div>
+
+<div class="card stats">
+<div class="stat"><div class="stat-lab"><i data-lucide="gauge"></i> Speaking rate</div><div class="stat-val mono">168<span class="stat-unit">wpm</span></div><div class="stat-note">Within ideal 125–170 band</div></div>
+<div class="stat"><div class="stat-lab"><i data-lucide="clock"></i> Duration</div><div class="stat-val mono">0:58</div><div class="stat-note">142 words spoken</div></div>
+<div class="stat"><div class="stat-lab"><i data-lucide="pause"></i> Pauses</div><div class="stat-val mono">9<span class="stat-unit">· 2 long</span></div><div class="stat-note">Avg 0.7s each</div></div>
+<div class="stat"><div class="stat-lab"><i data-lucide="message-square"></i> Fillers</div><div class="stat-val mono">4</div><div class="stat-note">um ×3 · like ×1</div></div>
+</div>
+
+<div class="grid2">
+<div class="card pad28">
+<div style="display:flex;align-items:center;gap:9px"><i data-lucide="sparkles" style="width:18px;height:18px;color:var(--brand)"></i><span class="h-sec">Analysis &amp; feedback</span></div>
+<div class="fb-list">
+<sc-for list="{{ feedback }}" as="f" hint-placeholder-count="3"><div class="fb-item"><div class="fb-dot"><i data-lucide="{{ f.icon }}"></i></div><div class="fb-txt">{{ f.text }}</div></div></sc-for>
+</div>
+<div class="split">
+<div class="split-col"><div class="split-h" style="color:#059669"><i data-lucide="check-circle-2"></i> What's working</div><sc-for list="{{ working }}" as="w" hint-placeholder-count="2"><div class="split-item"><i data-lucide="check" style="color:#22A05F"></i>{{ w }}</div></sc-for></div>
+<div class="split-col"><div class="split-h" style="color:#EA580C"><i data-lucide="target"></i> Focus areas</div><sc-for list="{{ focus }}" as="fo" hint-placeholder-count="2"><div class="split-item"><i data-lucide="arrow-up-right" style="color:#EA580C"></i>{{ fo }}</div></sc-for></div>
+</div>
+</div>
+<div class="card pad28" style="display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;gap:9px;margin-bottom:16px"><i data-lucide="file-text" style="width:18px;height:18px;color:var(--muted)"></i><span class="h-sec">Transcript</span></div>
+<p class="tr-body" style="margin-top:0">You know, I think the biggest opportunity for us this quarter is <span class="fill">um</span> really focusing on the customer experience. We've built something that people <span class="fill">like</span>, genuinely like, but the onboarding still feels <span class="fill">um</span> a little rough around the edges, and if we smooth that out I honestly believe retention follows.</p>
+<div class="pills">
+<span class="pill mono"><i data-lucide="gauge"></i> 168 <b>WPM</b></span>
+<span class="pill mono"><i data-lucide="type"></i> 142 <b>words</b></span>
+<span class="pill mono"><i data-lucide="pause"></i> 9 <b>pauses</b></span>
+<span class="pill mono"><i data-lucide="clock"></i> 58.4<b>s</b></span>
+<span class="pill mono"><i data-lucide="repeat"></i> 69% <b>unique</b></span>
+</div>
+</div>
+</div>
+
+<div class="card coach section-gap">
+<div class="coach-inner">
+<div class="coach-top"><div class="coach-ic"><i data-lucide="target"></i></div><div><div class="coach-eyebrow">Recommended next</div><div class="coach-title">{{ coachModule }}</div></div></div>
+<div class="coach-desc">{{ coachDesc }}</div>
+<div class="coach-metrics">
+<div class="cm"><div class="cm-lab">Current issue</div><div class="cm-val">4 fillers</div></div>
+<div class="cm"><div class="cm-lab">Target</div><div class="cm-val">≤ 2 fillers</div></div>
+<div class="cm"><div class="cm-lab">Potential gain</div><div class="cm-val up">+12 pts</div></div>
+</div>
+<div class="coach-cta">
+<div class="coach-foot">Could lift your <b>{{ worstName }}</b> score from <b>{{ worstScore }}</b> to <span class="up">{{ worstPotential }}</span></div>
+<button class="coach-btn">Go to module <i data-lucide="arrow-right"></i></button>
+</div>
+</div>
+</div>
+
+<div class="grid2b">
+<div class="card pad">
+<div style="padding:0 6px 6px"><span class="h-sec">Detailed breakdown</span><div class="sub" style="font-size:12.5px;margin-top:3px">Tap a dimension for the full analysis</div></div>
+<sc-for list="{{ metrics }}" as="m" hint-placeholder-count="5"><button class="brk-row" onClick="{{ m.open }}"><div class="brk-top"><div class="brk-name">{{ m.name }} <span class="brk-chip" style="{{ m.chipStyle }}">{{ m.grade }}</span></div><div class="brk-right"><span class="brk-score" style="{{ m.scoreStyle }}">{{ m.score }}</span><span class="brk-gain">+{{ m.gain }}</span><span class="brk-chev"><i data-lucide="chevron-right"></i></span></div></div><div class="brk-track"><div class="brk-ghost" style="{{ m.ghostStyle }}"></div><div class="brk-fill" style="{{ m.fillStyle }}"></div></div><div class="brk-meta">Potential {{ m.potential }} · {{ m.gain }} pts recoverable</div></button></sc-for>
+</div>
+<div class="card pad28">
+<div class="dist-head"><span class="h-sec">Where you rank</span><span class="sub" style="font-size:12.5px">Population distribution</span></div>
+<svg class="chart-svg" viewBox="0 0 560 210" data-om-raster="true">
+<defs><linearGradient id="bellFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EAE6F6"/><stop offset="100%" stop-color="#EAE6F6" stop-opacity="0.15"/></linearGradient></defs>
+<line x1="36" y1="176" x2="548" y2="176" stroke="#EAEAEF"/>
+<path d="{{ bellArea }}" fill="url(#bellFill)"/>
+<path d="{{ bellLine }}" fill="none" stroke="#C9C3DE" stroke-width="2"/>
+<line x1="{{ curX }}" y1="30" x2="{{ curX }}" y2="176" stroke="#7C3AED" stroke-width="2.5"/>
+<circle cx="{{ curX }}" cy="{{ curY }}" r="4.5" fill="#7C3AED"/>
+<line x1="{{ potX }}" y1="30" x2="{{ potX }}" y2="176" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="5 5"/>
+</svg>
+<div class="legend"><div class="leg"><span class="leg-line" style="background:#7C3AED"></span>Your score · <b style="color:var(--ink);margin-left:3px">top 22%</b></div><div class="leg"><span class="leg-line" style="background:#8B5CF6;opacity:0.6"></span>Your potential · top 12%</div></div>
+<div class="dist-note"><i data-lucide="trending-up"></i><div><div class="dist-note-t">+12 points within reach</div><div class="dist-note-d">Clearing the penalties above would move you from the top 22% to the top 12% of speakers.</div></div></div>
+<div class="defn"><div class="defn-lab">What "Overall" measures</div><div class="defn-txt">{{ overallDef }}</div></div>
+<div class="defn"><div class="defn-lab">About potential</div><div class="defn-txt">{{ potentialDef }}</div></div>
+</div>
+</div>
+
+<div class="card pad28 section-gap">
+<span class="h-sec">Performance profile</span>
+<div class="radar-wrap">
+<svg viewBox="0 0 260 250" style="width:260px;height:250px" data-om-raster="true">
+<sc-for list="{{ radarGrid }}" as="g" hint-placeholder-count="4"><polygon points="{{ g }}" fill="none" stroke="#EFEFF3" stroke-width="1"/></sc-for>
+<sc-for list="{{ radarAxes }}" as="ax" hint-placeholder-count="5"><line x1="130" y1="120" x2="{{ ax.x }}" y2="{{ ax.y }}" stroke="#EAEAEF" stroke-width="1"/></sc-for>
+<polygon points="{{ radarPoly }}" fill="#7C3AED" fill-opacity="0.14" stroke="#7C3AED" stroke-width="2"/>
+<sc-for list="{{ radarDots }}" as="d" hint-placeholder-count="5"><circle cx="{{ d.x }}" cy="{{ d.y }}" r="3.5" fill="#7C3AED"/></sc-for>
+<sc-for list="{{ radarLabels }}" as="l" hint-placeholder-count="5"><text x="{{ l.x }}" y="{{ l.y }}" text-anchor="{{ l.anchor }}" font-size="11" font-weight="500" fill="#71707B" font-family="Geist,sans-serif">{{ l.name }}</text></sc-for>
+</svg>
+<div class="rl"><sc-for list="{{ metrics }}" as="m" hint-placeholder-count="5"><div class="rl-item"><span class="rl-name">{{ m.name }}</span><div style="display:flex;align-items:center;gap:12px"><div class="mm-track" style="width:120px"><div class="mm-fill" style="{{ m.fillStyle }}"></div></div><span class="rl-val" style="{{ m.scoreStyle }}">{{ m.score }}</span></div></div></sc-for></div>
+</div>
+</div>
+
+<div class="card pad28 section-gap">
+<div style="display:flex;align-items:baseline;justify-content:space-between"><span class="h-sec">Progress over time</span><span class="sub" style="font-size:12.5px">Last 6 sessions</span></div>
+<svg class="chart-svg" viewBox="0 0 560 210" style="margin-top:12px" data-om-raster="true">
+<defs><linearGradient id="progFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7C3AED" stop-opacity="0.14"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/></linearGradient></defs>
+<sc-for list="{{ progGrid }}" as="y" hint-placeholder-count="4"><line x1="40" y1="{{ y.y }}" x2="540" y2="{{ y.y }}" stroke="#F3F3F7"/></sc-for>
+<sc-for list="{{ progYlabels }}" as="yl" hint-placeholder-count="4"><text x="30" y="{{ yl.y }}" text-anchor="end" font-size="10" fill="#A6A5B0" font-family="Geist Mono,monospace">{{ yl.v }}</text></sc-for>
+<path d="{{ progArea }}" fill="url(#progFill)"/>
+<polyline points="{{ progLine1 }}" fill="none" stroke="#7C3AED" stroke-width="2.5"/>
+<polyline points="{{ progLine2 }}" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-dasharray="4 4"/>
+<sc-for list="{{ progDots }}" as="d" hint-placeholder-count="6"><circle cx="{{ d.x }}" cy="{{ d.y }}" r="3.5" fill="#7C3AED" stroke="#fff" stroke-width="1.5"/></sc-for>
+<sc-for list="{{ progXlabels }}" as="xl" hint-placeholder-count="6"><text x="{{ xl.x }}" y="200" text-anchor="middle" font-size="10" fill="#A6A5B0" font-family="Geist Mono,monospace">{{ xl.v }}</text></sc-for>
+</svg>
+<div class="legend"><div class="leg"><span class="leg-line" style="background:#7C3AED"></span>Fluency</div><div class="leg"><span class="leg-line" style="background:#2563EB"></span>Pacing</div></div>
+</div>
+
+<div class="card pad28 section-gap">
+<div style="display:flex;align-items:center;gap:9px"><i data-lucide="lightbulb" style="width:18px;height:18px;color:var(--brand)"></i><span class="h-sec">Tips for your next practice</span></div>
+<div class="tips">
+<div class="tip"><div class="tip-h"><i data-lucide="brain"></i> Before you speak</div><ul><li>Take a breath and map your first two sentences before starting.</li><li>Decide your one key point — everything anchors to it.</li></ul></div>
+<div class="tip"><div class="tip-h"><i data-lucide="mic"></i> While speaking</div><ul><li>Replace filler words with a deliberate half-second pause.</li><li>Pause between ideas, not mid-thought — it reads as confidence.</li></ul></div>
+</div>
+</div>
+
+<div class="foot">
+<button class="btn" onClick="{{ onRetry }}"><i data-lucide="rotate-ccw"></i> Practice again</button>
+<button class="btn btn-primary" onClick="{{ onBack }}">Back to Dashboard <i data-lucide="arrow-right"></i></button>
+</div>
+
+</div></div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:2400},&quot;gamified&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Display&quot;}}">
+class Component extends DCLogic {
+  state = { selected: null };
+
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+  icons() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+
+  scoreColor(s) {
+    if (s >= 85) return "#059669";
+    if (s >= 70) return "#16A34A";
+    if (s >= 55) return "#D97706";
+    if (s >= 40) return "#EA580C";
+    return "#E11D48";
+  }
+  grade(s) {
+    if (s >= 85) return "Excellent";
+    if (s >= 70) return "Strong";
+    if (s >= 55) return "Fair";
+    if (s >= 40) return "Developing";
+    return "Needs work";
+  }
+  chipStyle(s) {
+    const c = this.scoreColor(s);
+    return { color: c, background: c + "18" };
+  }
+
+  data() {
+    return {
+      overall: 74,
+      metrics: [
+        { name: "Fluency", score: 68, potential: 80 },
+        { name: "Pacing", score: 81, potential: 93 },
+        { name: "Clarity", score: 72, potential: 84 },
+        { name: "Confidence", score: 63, potential: 75 },
+        { name: "Vocabulary", score: 70, potential: 82 },
+      ],
+    };
+  }
+
+  definitions() {
+    return {
+      Fluency: "How smoothly your speech flows. Based on how often you pause and how much time is lost to long pauses — a pause over ~1s mid-sentence, or ~1.5s between sentences, counts as long. Natural pauses at sentence ends don't hurt this score.",
+      Pacing: "Your speaking speed and steadiness. Speed is words per minute across the whole recording, pauses included (ideal: 125–170 WPM). Steadiness checks that your rate stays even instead of lurching between rushed and dragging passages.",
+      Clarity: "How complete and connected your phrasing is. Based on the average length of your spoken phrases (short fragments lower it) and how much of the recording is actual speech rather than silence.",
+      Confidence: "How assertive your delivery sounds. Counts filler words (“um”, “uh”, “like”…), mid-sentence hesitations, and whether you sustain speech rather than trailing off into silence.",
+      Vocabulary: "The variety in your word choice. Measures how many different words you use relative to how much you say, with a deduction for leaning on the same content words over and over.",
+    };
+  }
+
+  metricDetail(name) {
+    const map = {
+      Fluency: {
+        blurb: "Smooth, connected delivery without long silences.",
+        detail: "You paused 9 times for a total of 6.3s of silence, with 2 long pauses over one second. Your pause rate sits just above the ideal band — tightening the gaps between thoughts is the fastest way to lift this score.",
+        rows: [
+          { label: "Pause rate", value: "9.2/min", ideal: "0–6/min", ok: false },
+          { label: "Long pauses (>1s)", value: "2", ideal: "0–1", ok: false },
+          { label: "Avg pause length", value: "0.7s", ideal: "0.3–1.2s", ok: true },
+        ],
+      },
+      Pacing: {
+        blurb: "A steady, comfortable speaking rate.",
+        detail: "You held 168 WPM almost the entire session — right inside the ideal 125–170 band — with very little drift. This is a genuine strength; keep this rhythm as your baseline.",
+        rows: [
+          { label: "Speaking rate", value: "168 WPM", ideal: "125–170", ok: true },
+          { label: "Rate consistency", value: "High", ideal: "High", ok: true },
+        ],
+      },
+      Clarity: {
+        blurb: "Coherent, complete sentences.",
+        detail: "Your segments averaged 6.8 words — full thoughts rather than fragments — and 74% of the recording was active speech. A touch more sentence completion would push this higher.",
+        rows: [
+          { label: "Words per segment", value: "6.8", ideal: "5–15", ok: true },
+          { label: "Speech ratio", value: "74%", ideal: "70–85%", ok: true },
+        ],
+      },
+      Confidence: {
+        blurb: "Assertive tone with minimal hesitation.",
+        detail: "You used 4 filler words across 142 words (2.8 per 100) — slightly above ideal. Fillers cluster around transitions; replacing them with a brief pause is the single highest-leverage fix on this report.",
+        rows: [
+          { label: "Filler rate", value: "2.8/100", ideal: "0–2/100", ok: false },
+          { label: "Fillers used", value: "um ×3, like ×1", ideal: "≤ 2 total", ok: false },
+          { label: "Speech ratio", value: "74%", ideal: "70–85%", ok: true },
+        ],
+      },
+      Vocabulary: {
+        blurb: "Varied and rich word choice.",
+        detail: "98 of your 142 words were unique — a type-token ratio of 69%, comfortably in range. Occasional repetition of 'really' and 'like' is the only thing holding this back.",
+        rows: [
+          { label: "Type-token ratio", value: "69%", ideal: "60–80%", ok: true },
+          { label: "Unique words", value: "98 / 142", ideal: "—", ok: true },
+        ],
+      },
+    };
+    return map[name];
+  }
+
+  renderVals() {
+    const d = this.data();
+    const gamified = this.props.gamified ?? true;
+
+    const metrics = d.metrics.map((m) => {
+      const gain = m.potential - m.score;
+      const c = this.scoreColor(m.score);
+      return {
+        name: m.name,
+        score: m.score,
+        potential: m.potential,
+        gain,
+        grade: this.grade(m.score),
+        scoreStyle: { color: c },
+        chipStyle: { color: c, background: c + "18" },
+        fillStyle: { width: m.score + "%" },
+        ghostStyle: { width: m.potential + "%" },
+        open: () => this.setState({ selected: m.name }),
+      };
+    });
+
+    // worst implemented metric = Confidence here
+    const worst = d.metrics.reduce((a, b) => (a.score <= b.score ? a : b));
+
+    const feedback = [
+      { icon: "activity", text: "You spoke at 168 WPM with 9 pauses averaging 0.7s — a steady, easy-to-follow rhythm." },
+      { icon: "alert-triangle", text: "Confidence is your biggest opportunity: 4 filler words in 142 words, mostly at transitions." },
+      { icon: "check-circle-2", text: "Pacing and clarity are already strong — full sentences delivered at a natural rate." },
+    ];
+    const working = ["Pacing held right in the ideal band", "Complete, coherent sentences", "Healthy vocabulary variety (69% unique)"];
+    const focus = ["Confidence — 4 fillers, aim for ≤2", "Fluency — trim the 2 long pauses"];
+
+    // --- bell curve geometry ---
+    const plotL = 36, plotR = 548, baseY = 176, height = 152;
+    const mean = 50, sd = 15;
+    const g = (x) => Math.exp(-Math.pow(x - mean, 2) / (2 * sd * sd));
+    const sx = (s) => plotL + (s / 100) * (plotR - plotL);
+    const sy = (s) => baseY - g(s) * height;
+    let line = "", area = `M ${plotL} ${baseY} `;
+    for (let i = 0; i <= 100; i += 2) {
+      const px = sx(i).toFixed(1), py = sy(i).toFixed(1);
+      line += (i === 0 ? "M" : "L") + ` ${px} ${py} `;
+      area += `L ${px} ${py} `;
+    }
+    area += `L ${plotR} ${baseY} Z`;
+    const curX = sx(d.overall), potX = sx(86), curY = sy(d.overall);
+
+    // --- radar geometry ---
+    const cx = 130, cy = 120, R = 82;
+    const rmet = d.metrics;
+    const ang = (i) => (-90 + i * (360 / rmet.length)) * (Math.PI / 180);
+    const radarDots = rmet.map((m, i) => ({
+      x: (cx + R * (m.score / 100) * Math.cos(ang(i))).toFixed(1),
+      y: (cy + R * (m.score / 100) * Math.sin(ang(i))).toFixed(1),
+    }));
+    const radarPoly = radarDots.map((p) => `${p.x},${p.y}`).join(" ");
+    const radarAxes = rmet.map((m, i) => ({
+      x: (cx + R * Math.cos(ang(i))).toFixed(1),
+      y: (cy + R * Math.sin(ang(i))).toFixed(1),
+    }));
+    const radarGrid = [0.25, 0.5, 0.75, 1].map((f) =>
+      rmet.map((m, i) => `${(cx + R * f * Math.cos(ang(i))).toFixed(1)},${(cy + R * f * Math.sin(ang(i))).toFixed(1)}`).join(" ")
+    );
+    const radarLabels = rmet.map((m, i) => {
+      const a = ang(i), lx = cx + (R + 20) * Math.cos(a), ly = cy + (R + 20) * Math.sin(a);
+      let anchor = "middle";
+      if (Math.cos(a) > 0.3) anchor = "start";
+      else if (Math.cos(a) < -0.3) anchor = "end";
+      return { name: m.name, x: lx.toFixed(1), y: (ly + 3).toFixed(1), anchor };
+    });
+
+    // --- progress chart ---
+    const flu = [55, 60, 63, 66, 70, 68], pac = [64, 70, 73, 78, 80, 81];
+    const pL = 40, pR = 540, pT = 24, pB = 176, dMin = 40, dMax = 100;
+    const px = (i) => pL + (i / (flu.length - 1)) * (pR - pL);
+    const py = (v) => pB - ((v - dMin) / (dMax - dMin)) * (pB - pT);
+    const line1 = flu.map((v, i) => `${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(" ");
+    const line2 = pac.map((v, i) => `${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(" ");
+    const progArea = `M ${pL} ${pB} ` + flu.map((v, i) => `L ${px(i).toFixed(1)} ${py(v).toFixed(1)}`).join(" ") + ` L ${pR} ${pB} Z`;
+    const progDots = flu.map((v, i) => ({ x: px(i).toFixed(1), y: py(v).toFixed(1) }));
+    const progGrid = [40, 60, 80, 100].map((v) => ({ y: py(v).toFixed(1) }));
+    const progYlabels = [40, 60, 80, 100].map((v) => ({ y: (py(v) + 3).toFixed(1), v }));
+    const progXlabels = flu.map((v, i) => ({ x: px(i).toFixed(1), v: "S" + (i + 1) }));
+
+    // --- modal ---
+    let sel = null;
+    if (this.state.selected) {
+      const m = metrics.find((x) => x.name === this.state.selected);
+      const det = this.metricDetail(this.state.selected);
+      const c = this.scoreColor(m.score);
+      sel = {
+        name: m.name, score: m.score, potential: m.potential, gain: m.gain,
+        grade: m.grade, chipStyle: { color: c, background: c + "18" },
+        blurb: det.blurb, detail: det.detail, definition: this.definitions()[m.name],
+        rows: det.rows.map((r) => ({ ...r, valStyle: { color: r.ok ? "#059669" : "#EA580C" } })),
+      };
+    }
+
+    const oc = this.scoreColor(d.overall);
+    return {
+      overall: d.overall,
+      gradeLabel: this.grade(d.overall),
+      gradeStyle: { color: oc, background: oc + "18" },
+      metrics,
+      gamified,
+      feedback, working, focus,
+      coachModule: "Vocal Confidence Module",
+      coachDesc: "Targets filler words and hesitation, training you to hold deliberate pauses in place of 'um' and 'like' so your delivery reads as assured.",
+      worstName: worst.name, worstScore: worst.score, worstPotential: worst.potential,
+      overallDef: "A weighted blend of the five scores: Fluency 30%, Pacing 25%, Confidence 25%, Clarity 15%, Vocabulary 5%.",
+      potentialDef: "Potential is what a score becomes with the fixable issues we detected (long pauses, filler words, rushed passages…) removed — the fastest wins available to you right now.",
+      bellArea: area, bellLine: line, curX: curX.toFixed(1), potX: potX.toFixed(1), curY: curY.toFixed(1),
+      radarGrid, radarAxes, radarPoly, radarDots, radarLabels,
+      progArea, progLine1: line1, progLine2: line2, progDots, progGrid, progYlabels, progXlabels,
+      selected: this.state.selected, sel,
+      closeModal: () => this.setState({ selected: null }),
+      stop: (e) => e.stopPropagation(),
+      onBack: () => {}, onRetry: () => {},
+    };
+  }
+}
+</script>
+</body>
+</html>

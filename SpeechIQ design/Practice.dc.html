@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+.page{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--brand:#7C3AED;--brand2:#2563EB;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+.mono{font-family:'Geist Mono','SF Mono',monospace;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.wrap{max-width:760px;margin:0 auto;padding:28px 32px 72px}
+a{color:var(--brand);text-decoration:none}
+a:hover{color:#6D28D9}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--faint)}
+.sub{color:var(--muted)}
+.backlink{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;font-weight:500;background:none;border:none;cursor:pointer;padding:6px 0;font-family:inherit}
+.backlink:hover{color:var(--ink)}
+.backlink .lucide{width:16px;height:16px}
+.h1{font-size:30px;font-weight:600;letter-spacing:-0.03em;margin:6px 0 6px}
+.h1sub{font-size:14.5px;color:var(--muted)}
+/* primary CTA */
+.cta{display:flex;align-items:center;gap:22px;width:100%;text-align:left;border:none;cursor:pointer;font-family:inherit;border-radius:18px;padding:26px 28px;color:#fff;background:linear-gradient(135deg,#7C3AED 0%,#2563EB 100%);box-shadow:0 12px 30px -10px rgba(80,50,220,0.5);transition:transform .14s,box-shadow .14s;margin-top:22px}
+.cta:hover{transform:translateY(-2px);box-shadow:0 18px 38px -12px rgba(80,50,220,0.55)}
+.cta-ic{width:58px;height:58px;border-radius:16px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cta-ic .lucide{width:27px;height:27px}
+.cta-eye{font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:rgba(255,255,255,0.75)}
+.cta-t{font-size:20px;font-weight:600;letter-spacing:-0.02em;margin-top:3px}
+.cta-d{font-size:13.5px;color:rgba(255,255,255,0.8);margin-top:4px}
+.cta-d b{color:#fff;font-weight:600}
+.cta-arrow{margin-left:auto;flex-shrink:0}
+.cta-arrow .lucide{width:23px;height:23px;color:rgba(255,255,255,0.85);transition:transform .14s}
+.cta:hover .cta-arrow .lucide{transform:translateX(4px)}
+/* mode grid */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.mode{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;cursor:pointer;font-family:inherit;transition:border-color .14s,transform .14s}
+.mode:hover{transform:translateY(-2px)}
+.mode.m-purple:hover{border-color:#D8CBF5}
+.mode.m-orange:hover{border-color:#F5D3B0}
+.mode.m-emerald:hover{border-color:#B7E3CC}
+.mode-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.mode-ic .lucide{width:20px;height:20px}
+.m-purple .mode-ic{background:#F3ECFD;color:#7C3AED}
+.m-orange .mode-ic{background:#FDEEE0;color:#EA580C}
+.m-emerald .mode-ic{background:#E3F5EC;color:#059669}
+.mode-t{font-size:15px;font-weight:600}
+.mode-d{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+/* guided list */
+.glist{display:flex;flex-direction:column;gap:12px;margin-top:22px}
+.grow{display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;cursor:pointer;font-family:inherit;transition:border-color .14s,transform .14s}
+.grow:hover{border-color:#D8CBF5;transform:translateY(-1px)}
+.grow-t{font-size:15px;font-weight:600}
+.grow-d{font-size:12.5px;color:var(--muted);margin-top:3px;max-width:520px}
+.grow .lucide{width:18px;height:18px;color:var(--faint);flex-shrink:0}
+.grow:hover .lucide{color:var(--brand)}
+/* prompt banner */
+.prompt{display:flex;gap:16px;align-items:flex-start;background:#FAF8FE;border:1px solid #EBE3FB;border-radius:16px;padding:22px 24px;margin-top:20px}
+.prompt-ic{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#8B3FF0,#2F6BF0);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prompt-ic .lucide{width:21px;height:21px}
+.prompt-lab{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--brand)}
+.prompt-txt{font-size:17px;line-height:1.5;color:var(--ink);margin-top:6px;font-weight:500}
+/* recorder */
+.rec{margin-top:16px;padding:34px 28px}
+.rec-h{font-size:16px;font-weight:600;text-align:center}
+.rec-stage{display:flex;flex-direction:column;align-items:center;gap:22px;margin-top:26px}
+.mic-btn{width:128px;height:128px;border-radius:50%;border:none;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7C3AED,#2563EB);box-shadow:0 16px 34px -10px rgba(80,50,220,0.55);transition:transform .15s}
+.mic-btn:hover{transform:scale(1.06)}
+.mic-btn:active{transform:scale(0.96)}
+.mic-btn .lucide{width:52px;height:52px}
+.rec-hint{font-size:14px;color:var(--muted)}
+.orline{display:flex;align-items:center;gap:14px;width:100%;max-width:320px}
+.orline span{font-size:13px;color:var(--faint)}
+.orline i{flex:1;height:1px;background:var(--line)}
+.drop{width:100%;max-width:360px;border:1.5px dashed var(--line);border-radius:14px;padding:24px;text-align:center;cursor:pointer;transition:border-color .14s,background .14s;background:none;font-family:inherit}
+.drop:hover{border-color:#C9BCEF;background:#FBFAFE}
+.drop .lucide{width:24px;height:24px;color:var(--faint)}
+.drop-t{font-size:13.5px;font-weight:500;color:var(--ink2);margin-top:9px}
+.drop-d{font-size:12px;color:var(--faint);margin-top:3px}
+/* recording state */
+.recbar{display:inline-flex;align-items:center;gap:10px;background:#FEECEF;border:1px solid #FAD1DA;border-radius:999px;padding:8px 16px}
+.recdot{width:10px;height:10px;border-radius:50%;background:#E11D48;animation:pulse 1.3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.rectime{font-size:17px;font-weight:600;color:#BE123C}
+.wavebox{width:100%;height:76px;overflow:hidden;margin:6px 0 2px}
+.waverow{display:flex;align-items:center;justify-content:flex-end;gap:3px;height:100%}
+.wbar{width:5px;border-radius:3px;flex-shrink:0;background:linear-gradient(to top,#7C3AED,#E11D48)}
+.durwrap{width:100%;max-width:340px}
+.durtrack{height:6px;background:var(--line2);border-radius:99px;overflow:hidden}
+.durfill{height:100%;border-radius:99px;transition:width .3s}
+.durlabel{text-align:center;font-size:12px;font-weight:500;color:var(--muted);margin-top:9px}
+.stop-wrap{position:relative;width:128px;height:128px}
+.stop-ring{position:absolute;inset:0;border-radius:50%;background:#FBA5B8;opacity:0.5;animation:ring 1.6s ease-out infinite}
+.stop-ring.d{animation-delay:0.8s}
+@keyframes ring{0%{transform:scale(1);opacity:0.5}100%{transform:scale(1.6);opacity:0}}
+.stop-btn{position:relative;width:128px;height:128px;border-radius:50%;border:none;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#F43F5E,#BE123C);box-shadow:0 16px 34px -10px rgba(190,18,60,0.5);transition:transform .15s}
+.stop-btn:hover{transform:scale(1.06)}
+.stop-btn .lucide{width:52px;height:52px}
+/* recorded player */
+.player{width:100%;background:#F1FbF5;border:1px solid #CDEBD9;border-radius:16px;padding:20px}
+.player-wave{display:flex;align-items:center;gap:2px;height:56px}
+.pwbar{flex:1;border-radius:2px;min-width:2px;background:#8FCBAA}
+.player-ctrls{display:flex;align-items:center;gap:13px;margin-top:14px}
+.play-btn{width:44px;height:44px;border-radius:50%;background:#059669;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .14s}
+.play-btn:hover{background:#047857}
+.play-btn .lucide{width:19px;height:19px}
+.player-time{font-size:13.5px;color:#047857;font-weight:600}
+.rec-actions{display:flex;gap:14px;margin-top:18px;width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:14px;font-weight:500;border-radius:12px;padding:13px 18px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink2);transition:border-color .15s,background .15s;flex:1}
+.btn:hover{border-color:#D6D6DE;background:#FCFCFD}
+.btn .lucide{width:16px;height:16px}
+.btn-primary{border:none;color:#fff;font-weight:600;background:linear-gradient(135deg,#7C3AED,#2563EB)}
+.btn-primary:hover{filter:brightness(1.05)}
+/* tips */
+.tips{margin-top:16px;padding:24px}
+.tips-h{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600}
+.tips-h .lucide{width:18px;height:18px;color:var(--brand)}
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 26px;margin-top:16px}
+.tip{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.5;color:var(--ink2)}
+.tip .lucide{width:16px;height:16px;color:#059669;margin-top:2px;flex-shrink:0}
+/* overlay */
+.overlay{position:fixed;inset:0;background:rgba(255,255,255,0.82);backdrop-filter:blur(4px);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.ov-card{background:#fff;border:1px solid #EBE3FB;border-radius:24px;box-shadow:0 24px 60px rgba(60,40,120,0.18);padding:44px 40px;max-width:380px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center}
+.spinner{width:76px;height:76px;border-radius:50%;border:4px solid #EEE9FA;border-top-color:#7C3AED;border-right-color:#2563EB;animation:spin 0.9s linear infinite;margin-bottom:24px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ov-stage{font-size:17px;font-weight:600;margin-bottom:18px;min-height:24px}
+.ov-dots{display:flex;align-items:center;gap:6px}
+.ov-dot{height:6px;width:6px;border-radius:99px;background:#E5E1EF;transition:all .3s}
+.ov-dot.on{width:24px;background:#7C3AED}
+.ov-dot.done{background:#C4B5F0}
+.ov-foot{font-size:12px;color:var(--faint);margin-top:24px}
+.ov-check{width:76px;height:76px;border-radius:50%;background:#E7F7EE;color:#059669;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+.ov-check .lucide{width:36px;height:36px}
+.ov-xp{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#7A5B12;background:#FBEFD0;border-radius:99px;padding:5px 13px;margin:14px 0 22px}
+.ov-xp .lucide{width:14px;height:14px}
+.ov-btns{display:flex;flex-direction:column;gap:10px;width:100%}
+.shell{display:flex;min-height:100vh}
+.main{flex:1;min-width:0}
+</style>
+</helmet>
+<div class="page"><div class="shell">
+<dc-import name="SideNav" active="practice" plan="free" hint-size="256px,100%"></dc-import>
+<div class="main"><div class="wrap">
+
+<sc-if value="{{ isHub }}" hint-placeholder-val="{{ true }}">
+<div class="h1">Practice</div>
+<div class="h1sub">Choose how you want to practice today.</div>
+<button class="cta" onClick="{{ quickStart }}">
+<div class="cta-ic"><i data-lucide="mic"></i></div>
+<div><div class="cta-eye">Quick practice</div><div class="cta-t">Jump in with a random prompt</div><div class="cta-d">Earn <b>+50 XP</b> for every session</div></div>
+<span class="cta-arrow"><i data-lucide="arrow-right"></i></span>
+</button>
+<div class="modes">
+<button class="mode m-purple" onClick="{{ openGuided }}"><div class="mode-ic"><i data-lucide="message-square"></i></div><div class="mode-t">Guided Prompts</div><div class="mode-d">Practice for a specific scenario</div></button>
+<button class="mode m-orange" onClick="{{ startFocus }}"><div class="mode-ic"><i data-lucide="target"></i></div><div class="mode-t">Focus Drill</div><div class="mode-d">Targets your weakest metric</div></button>
+<button class="mode m-emerald" onClick="{{ startRead }}"><div class="mode-ic"><i data-lucide="book-open"></i></div><div class="mode-t">Read Aloud</div><div class="mode-d">Clean pacing &amp; clarity baseline</div></button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isGuided }}" hint-placeholder-val="{{ false }}">
+<button class="backlink" onClick="{{ toHub }}"><i data-lucide="arrow-left"></i> Back to practice modes</button>
+<div class="h1" style="margin-top:14px;font-size:24px">Guided prompts</div>
+<div class="h1sub">Pick a scenario to practice for.</div>
+<div class="glist">
+<sc-for list="{{ guided }}" as="g" hint-placeholder-count="4"><button class="grow" onClick="{{ g.pick }}"><div><div class="grow-t">{{ g.title }}</div><div class="grow-d">{{ g.prompt }}</div></div><i data-lucide="arrow-right"></i></button></sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSession }}" hint-placeholder-val="{{ false }}">
+<button class="backlink" onClick="{{ toHub }}"><i data-lucide="arrow-left"></i> Back to practice modes</button>
+<div class="prompt">
+<div class="prompt-ic"><i data-lucide="volume-2"></i></div>
+<div><div class="prompt-lab">{{ promptLabel }}</div><div class="prompt-txt">{{ promptText }}</div></div>
+</div>
+
+<div class="card rec">
+<div class="rec-h">Record your speech</div>
+
+<sc-if value="{{ isIdle }}" hint-placeholder-val="{{ true }}">
+<div class="rec-stage">
+<button class="mic-btn" onClick="{{ startRec }}"><i data-lucide="mic"></i></button>
+<div class="rec-hint">Tap to start recording</div>
+<div class="orline"><i></i><span>or</span><i></i></div>
+<button class="drop" onClick="{{ simulateUpload }}"><i data-lucide="upload"></i><div class="drop-t">Drag &amp; drop an audio file</div><div class="drop-d">or click to browse</div></button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isRecording }}" hint-placeholder-val="{{ false }}">
+<div class="rec-stage">
+<div class="recbar"><span class="recdot"></span><span class="rectime mono">{{ timeLabel }}</span></div>
+<div class="wavebox"><div class="waverow"><sc-for list="{{ waveBars }}" as="b" hint-placeholder-count="20"><div class="wbar" style="{{ b.style }}"></div></sc-for></div></div>
+<div class="durwrap"><div class="durtrack"><div class="durfill" style="{{ durStyle }}"></div></div><div class="durlabel">{{ durLabel }}</div></div>
+<div class="stop-wrap"><span class="stop-ring"></span><span class="stop-ring d"></span><button class="stop-btn" onClick="{{ stopRec }}"><i data-lucide="square"></i></button></div>
+<div class="rec-hint">Tap to stop</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isRecorded }}" hint-placeholder-val="{{ false }}">
+<div class="rec-stage" style="gap:0">
+<div class="player">
+<div class="player-wave"><sc-for list="{{ playerBars }}" as="b" hint-placeholder-count="48"><div class="pwbar" style="{{ b.style }}"></div></sc-for></div>
+<div class="player-ctrls"><button class="play-btn"><i data-lucide="play"></i></button><span class="player-time mono">0:00 / {{ timeLabel }}</span></div>
+</div>
+<div class="rec-actions">
+<button class="btn" onClick="{{ recordAgain }}"><i data-lucide="rotate-ccw"></i> Record again</button>
+<button class="btn btn-primary" onClick="{{ analyze }}">Analyze speech <i data-lucide="arrow-right"></i></button>
+</div>
+</div>
+</sc-if>
+</div>
+
+<div class="card tips">
+<div class="tips-h"><i data-lucide="lightbulb"></i> Pro tips</div>
+<div class="tips-grid">
+<div class="tip"><i data-lucide="check"></i> Speak clearly and at a natural pace</div>
+<div class="tip"><i data-lucide="check"></i> Find a quiet environment for best results</div>
+<div class="tip"><i data-lucide="check"></i> Aim for 30–60 seconds of speech</div>
+<div class="tip"><i data-lucide="check"></i> Practice regularly to improve your metrics</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ analyzing }}" hint-placeholder-val="{{ false }}">
+<div class="overlay"><div class="ov-card">
+<sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+<div class="ov-check"><i data-lucide="check"></i></div>
+<div class="ov-stage">Analysis complete</div>
+<span class="ov-xp"><i data-lucide="zap"></i> +50 XP earned</span>
+<div class="ov-btns"><button class="btn btn-primary" onClick="{{ viewResults }}">View results <i data-lucide="arrow-right"></i></button><button class="btn" onClick="{{ practiceAgain }}">Practice again</button></div>
+</sc-if>
+<sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+<div class="spinner"></div>
+<div class="ov-stage">{{ stageText }}</div>
+<div class="ov-dots"><sc-for list="{{ stageDots }}" as="d" hint-placeholder-count="5"><div class="ov-dot {{ d.cls }}"></div></sc-for></div>
+<div class="ov-foot">This usually takes a few seconds</div>
+</sc-if>
+</div></div>
+</sc-if>
+
+</div></div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = {
+    view: "hub",      // hub | guided | session
+    phase: "idle",    // idle | recording | recorded
+    label: "",
+    prompt: "",
+    time: 0,
+    wave: [],
+    analyzing: false,
+    stage: 0,
+    done: false,
+  };
+
+  STAGES = [
+    "Uploading your recording…",
+    "Transcribing your speech…",
+    "Detecting pauses & pacing…",
+    "Scoring fluency, clarity & confidence…",
+    "Putting together your feedback…",
+  ];
+
+  PROMPTS = [
+    "Describe your favorite childhood memory in detail.",
+    "Explain a complex topic you're passionate about.",
+    "Tell a story about a time you overcame a challenge.",
+    "Describe your ideal day from start to finish.",
+  ];
+
+  GUIDED = [
+    { title: "Job Interview Answer", prompt: "Tell me about a time you overcame a professional challenge." },
+    { title: "Presentation Opener", prompt: "Open a presentation introducing a new product to your team." },
+    { title: "Elevator Pitch", prompt: "Pitch your business idea to a stranger in under 60 seconds." },
+    { title: "Toast or Speech", prompt: "Give a short toast celebrating a friend's achievement." },
+  ];
+
+  FOCUS = "Describe a recent conversation where you noticed yourself pausing to think. Try to keep your thoughts connected without long gaps of silence.";
+  READ = "Public speaking is less about perfect words and more about steady breath and clear intention. When you slow down between ideas, your audience has time to follow you, and your voice carries more confidence with every sentence you complete.";
+
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+  componentWillUnmount() { this.clearAll(); }
+  icons() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+  clearAll() { clearInterval(this._timer); clearInterval(this._waver); clearInterval(this._stager); }
+
+  toSession(label, prompt) {
+    this.setState({ view: "session", phase: "idle", label, prompt, time: 0, wave: [] });
+  }
+
+  startRec = () => {
+    this.setState({ phase: "recording", time: 0, wave: [] });
+    this._timer = setInterval(() => this.setState((s) => ({ time: s.time + 1 })), 1000);
+    this._waver = setInterval(() => {
+      this.setState((s) => {
+        const peak = 0.25 + Math.abs(Math.sin(s.wave.length * 0.55) * 0.4) + Math.random() * 0.35;
+        const next = [...s.wave, Math.min(1, peak)];
+        return { wave: next.slice(-52) };
+      });
+    }, 130);
+  };
+
+  stopRec = () => {
+    clearInterval(this._timer); clearInterval(this._waver);
+    // freeze a fuller static waveform for the player
+    const bars = [...Array(56)].map((_, i) => 0.2 + Math.abs(Math.sin(i * 0.6) + Math.sin(i * 0.27)) * 0.5);
+    this.setState({ phase: "recorded", wave: bars });
+  };
+
+  analyze = () => {
+    this.setState({ analyzing: true, stage: 0, done: false });
+    this._stager = setInterval(() => {
+      this.setState((s) => {
+        if (s.stage + 1 >= this.STAGES.length) {
+          clearInterval(this._stager);
+          setTimeout(() => this.setState({ done: true }), 900);
+          return { stage: this.STAGES.length - 1 };
+        }
+        return { stage: s.stage + 1 };
+      });
+    }, 1200);
+  };
+
+  reset = () => {
+    this.clearAll();
+    this.setState({ analyzing: false, done: false, phase: "idle", time: 0, wave: [] });
+  };
+
+  renderVals() {
+    const s = this.state;
+    const mins = Math.floor(s.time / 60), secs = s.time % 60;
+    const timeLabel = `${mins}:${secs.toString().padStart(2, "0")}`;
+
+    // duration guidance
+    const cap = 90, minI = 30, maxI = 60;
+    const durPct = Math.min(100, (s.time / cap) * 100);
+    let durColor = "#7C3AED", durLabel = `Building up… aim for ${minI}–${maxI}s`;
+    if (s.time >= minI && s.time <= maxI) { durColor = "#16A34A"; durLabel = "Great length — nice and clear"; }
+    else if (s.time > maxI) { durColor = "#D97706"; durLabel = "Consider wrapping up soon"; }
+
+    const waveMax = Math.max(...s.wave, 0.0001);
+    const waveBars = s.wave.map((v) => ({ style: { height: Math.max(8, (v / waveMax) * 100) + "%" } }));
+    const playerBars = s.wave.map((v) => ({ style: { height: Math.max(10, Math.min(100, v * 100)) + "%" } }));
+
+    const stageDots = this.STAGES.map((_, i) => ({ cls: i === s.stage ? "on" : i < s.stage ? "done" : "" }));
+
+    return {
+      isHub: s.view === "hub",
+      isGuided: s.view === "guided",
+      isSession: s.view === "session",
+      isIdle: s.phase === "idle",
+      isRecording: s.phase === "recording",
+      isRecorded: s.phase === "recorded",
+      promptLabel: s.label || "Your practice prompt",
+      promptText: s.prompt,
+      guided: this.GUIDED.map((g) => ({ ...g, pick: () => this.toSession(g.title, g.prompt) })),
+      timeLabel,
+      waveBars, playerBars,
+      durStyle: { width: durPct + "%", background: durColor },
+      durLabel,
+      analyzing: s.analyzing,
+      done: s.done,
+      notDone: !s.done,
+      stageText: this.STAGES[s.stage],
+      stageDots,
+      quickStart: () => this.toSession("Your practice prompt", this.PROMPTS[Math.floor(Math.random() * this.PROMPTS.length)]),
+      openGuided: () => this.setState({ view: "guided" }),
+      startFocus: () => this.toSession("Focus Drill · Fluency", this.FOCUS),
+      startRead: () => this.toSession("Read this aloud", this.READ),
+      toHub: () => { this.clearAll(); this.setState({ view: "hub", phase: "idle", analyzing: false, done: false, time: 0, wave: [] }); },
+      startRec: this.startRec,
+      stopRec: this.stopRec,
+      simulateUpload: this.stopRec,
+      recordAgain: () => this.setState({ phase: "idle", time: 0, wave: [] }),
+      analyze: this.analyze,
+      viewResults: () => {},
+      practiceAgain: this.reset,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+.page{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--em:#059669;--em2:#0D9488;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+.mono{font-family:'Geist Mono','SF Mono',monospace;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.wrap{max-width:760px;margin:0 auto;padding:28px 32px 72px}
+a{color:var(--em);text-decoration:none}
+a:hover{color:#047857}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.backlink{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;font-weight:500;background:none;border:none;cursor:pointer;padding:6px 0;font-family:inherit}
+.backlink:hover{color:var(--ink)}
+.backlink .lucide{width:16px;height:16px}
+/* hero */
+.hero{display:flex;gap:16px;align-items:flex-start;position:relative;overflow:hidden;border-radius:18px;padding:26px 28px;color:#fff;background:linear-gradient(135deg,#059669 0%,#0D9488 100%);box-shadow:0 14px 32px -12px rgba(5,120,90,0.5);margin:16px 0 20px}
+.hero-blob{position:absolute;border-radius:50%;background:rgba(255,255,255,0.09)}
+.hero-ic{width:48px;height:48px;border-radius:13px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
+.hero-ic .lucide{width:23px;height:23px}
+.hero-t{font-size:21px;font-weight:600;letter-spacing:-0.02em;position:relative;z-index:1}
+.hero-d{font-size:13.5px;line-height:1.5;color:rgba(255,255,255,0.88);margin-top:5px;position:relative;z-index:1;max-width:520px}
+/* train */
+.train{padding:36px 28px;text-align:center}
+.train-mic{width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,#10B981,#0D9488);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;box-shadow:0 14px 30px -10px rgba(5,120,90,0.5)}
+.train-mic .lucide{width:42px;height:42px;color:#fff}
+.train-t{font-size:21px;font-weight:600;letter-spacing:-0.02em}
+.train-d{font-size:14px;color:var(--muted);line-height:1.55;max-width:420px;margin:10px auto 26px}
+.need{max-width:440px;margin:0 auto;text-align:left;background:#ECFAF3;border:1px solid #CDEEDD;border-radius:14px;padding:18px 20px}
+.need-h{font-size:13px;font-weight:600;color:#0A6B4E;margin-bottom:12px}
+.need-item{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:#0F7355;line-height:1.5;padding:4px 0}
+.need-item .lucide{width:15px;height:15px;margin-top:2px;flex-shrink:0}
+.btn-em{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;max-width:440px;font-family:inherit;font-size:15px;font-weight:600;border:none;border-radius:13px;padding:15px;cursor:pointer;color:#fff;background:linear-gradient(135deg,#059669,#0D8A6E);transition:filter .14s;margin:20px auto 0}
+.btn-em:hover{filter:brightness(1.06)}
+.btn-em:disabled{opacity:0.7;cursor:default}
+.btn-em .lucide{width:18px;height:18px}
+.spin-sm{width:18px;height:18px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* synth */
+.status{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.status-dot{width:9px;height:9px;border-radius:50%;background:#10B981;box-shadow:0 0 0 4px rgba(16,185,129,0.16)}
+.status-t{font-size:14px;font-weight:600;color:#047857}
+.lab{font-size:13.5px;font-weight:600;margin-bottom:9px}
+.ta{width:100%;height:150px;padding:16px;border:1.5px solid var(--line);border-radius:13px;font-family:inherit;font-size:14.5px;line-height:1.6;color:var(--ink);resize:none;outline:none;transition:border-color .15s}
+.ta:focus{border-color:var(--em)}
+.ta::placeholder{color:var(--faint)}
+.synth-card{padding:24px 26px}
+/* result */
+.result{margin-top:16px;padding:24px 26px}
+.result-h{font-size:15px;font-weight:600;margin-bottom:16px}
+.player{display:flex;align-items:center;gap:16px;background:#ECFAF3;border:1px solid #CDEEDD;border-radius:14px;padding:18px 20px}
+.play-btn{width:48px;height:48px;border-radius:50%;background:var(--em);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .14s}
+.play-btn:hover{background:#047857}
+.play-btn .lucide{width:20px;height:20px}
+.pwave{flex:1;display:flex;align-items:center;gap:2px;height:44px}
+.pwbar{flex:1;border-radius:2px;min-width:2px;background:#7FCBAC}
+.ptime{font-size:13px;color:#047857;font-weight:600;min-width:34px;text-align:right}
+.result-actions{display:flex;gap:12px;margin-top:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:1;font-family:inherit;font-size:14px;font-weight:600;border-radius:12px;padding:13px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink2);transition:border-color .15s,background .15s}
+.btn:hover{border-color:#B7E0CD;background:#FAFDFC}
+.btn .lucide{width:16px;height:16px}
+.btn-solid{border:none;color:#fff;background:var(--em)}
+.btn-solid:hover{background:#047857}
+/* use cases */
+.uc{margin-top:16px;padding:24px 26px}
+.uc-h{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600}
+.uc-h .lucide{width:18px;height:18px;color:var(--em)}
+.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;margin-top:16px}
+.uc-item{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.5;color:var(--ink2)}
+.uc-item .lucide{width:16px;height:16px;color:var(--em);margin-top:2px;flex-shrink:0}
+.shell{display:flex;min-height:100vh}
+.main{flex:1;min-width:0}
+</style>
+</helmet>
+<div class="page"><div class="shell">
+<dc-import name="SideNav" active="voicelab" plan="free" hint-size="256px,100%"></dc-import>
+<div class="main"><div class="wrap">
+<button class="backlink" onClick="{{ onBack }}"><i data-lucide="arrow-left"></i> Back to Dashboard</button>
+
+<div class="hero">
+<div class="hero-blob" style="width:140px;height:140px;top:-46px;right:-30px"></div>
+<div class="hero-ic"><i data-lucide="sparkles"></i></div>
+<div><div class="hero-t">Voice Synthesis Lab</div><div class="hero-d">Create a digital clone of your voice to rehearse speeches and presentations.</div></div>
+</div>
+
+<sc-if value="{{ noModel }}" hint-placeholder-val="{{ true }}">
+<div class="card train">
+<div class="train-mic"><i data-lucide="mic"></i></div>
+<div class="train-t">Train your voice model</div>
+<div class="train-d">Record 5–10 minutes of your voice reading various texts to create a personalized voice model.</div>
+<div class="need">
+<div class="need-h">What you'll need</div>
+<div class="need-item"><i data-lucide="check"></i> 5–10 minutes of clear audio recordings</div>
+<div class="need-item"><i data-lucide="check"></i> A quiet environment with minimal background noise</div>
+<div class="need-item"><i data-lucide="check"></i> Consistent speaking pace and tone</div>
+<div class="need-item"><i data-lucide="check"></i> Various sentence structures and words</div>
+</div>
+<sc-if value="{{ training }}" hint-placeholder-val="{{ false }}"><button class="btn-em" disabled="true"><span class="spin-sm"></span> Training model…</button></sc-if>
+<sc-if value="{{ notTraining }}" hint-placeholder-val="{{ true }}"><button class="btn-em" onClick="{{ train }}"><i data-lucide="upload"></i> Upload training audio</button></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasModel }}" hint-placeholder-val="{{ false }}">
+<div class="card synth-card">
+<div class="status"><span class="status-dot"></span><span class="status-t">Voice model active</span></div>
+<div class="lab">Enter text to synthesize</div>
+<textarea class="ta" placeholder="Type or paste your speech here. The AI will generate it in your voice…" value="{{ text }}" onInput="{{ onText }}"></textarea>
+<sc-if value="{{ synthesizing }}" hint-placeholder-val="{{ false }}"><button class="btn-em" style="max-width:none" disabled="true"><span class="spin-sm"></span> Synthesizing…</button></sc-if>
+<sc-if value="{{ notSynth }}" hint-placeholder-val="{{ true }}"><button class="btn-em" style="max-width:none" onClick="{{ generate }}" disabled="{{ genDisabled }}"><i data-lucide="sparkles"></i> Generate speech</button></sc-if>
+</div>
+
+<sc-if value="{{ hasAudio }}" hint-placeholder-val="{{ false }}">
+<div class="card result">
+<div class="result-h">Synthesized speech</div>
+<div class="player"><button class="play-btn"><i data-lucide="play"></i></button><div class="pwave"><sc-for list="{{ waveBars }}" as="b" hint-placeholder-count="40"><div class="pwbar" style="{{ b.style }}"></div></sc-for></div><span class="ptime mono">0:07</span></div>
+<div class="result-actions"><button class="btn"><i data-lucide="download"></i> Download</button><button class="btn btn-solid" onClick="{{ generateNew }}"><i data-lucide="refresh-cw"></i> Generate new</button></div>
+</div>
+</sc-if>
+
+<div class="card uc">
+<div class="uc-h"><i data-lucide="lightbulb"></i> Use cases</div>
+<div class="uc-grid">
+<div class="uc-item"><i data-lucide="presentation"></i> Rehearse important presentations before delivering them</div>
+<div class="uc-item"><i data-lucide="volume-2"></i> Hear how your speech sounds with perfect fluency</div>
+<div class="uc-item"><i data-lucide="graduation-cap"></i> Generate example speeches to analyze and learn from</div>
+<div class="uc-item"><i data-lucide="file-audio"></i> Create audio versions of your written content</div>
+</div>
+</div>
+</sc-if>
+
+</div></div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040,&quot;height&quot;:760}}">
+class Component extends DCLogic {
+  state = { model: false, training: false, text: "", synth: false, hasAudio: false };
+
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+  componentWillUnmount() { clearTimeout(this._t1); clearTimeout(this._t2); }
+  icons() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+
+  train = () => {
+    this.setState({ training: true });
+    this._t1 = setTimeout(() => this.setState({ training: false, model: true }), 2400);
+  };
+  onText = (e) => { const v = e.target.value; this.setState({ text: v }); };
+  generate = () => {
+    if (!this.state.text.trim()) return;
+    this.setState({ synth: true });
+    this._t2 = setTimeout(() => this.setState({ synth: false, hasAudio: true }), 1800);
+  };
+  generateNew = () => this.setState({ hasAudio: false, text: "" });
+
+  renderVals() {
+    const s = this.state;
+    const waveBars = [...Array(44)].map((_, i) => ({
+      style: { height: Math.max(14, Math.abs(Math.sin(i * 0.5) + Math.sin(i * 0.23)) * 46 + 10) + "%" },
+    }));
+    return {
+      onBack: () => {},
+      noModel: !s.model,
+      hasModel: s.model,
+      training: s.training,
+      notTraining: !s.training,
+      train: this.train,
+      text: s.text,
+      onText: this.onText,
+      synthesizing: s.synth,
+      notSynth: !s.synth,
+      genDisabled: s.synth || !s.text.trim(),
+      generate: this.generate,
+      hasAudio: s.hasAudio,
+      generateNew: this.generateNew,
+      waveBars,
+    };
+  }
+}
+</script>
+</body>
+</html>

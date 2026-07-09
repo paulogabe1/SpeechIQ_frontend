@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}body{margin:0}
+.root{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--brand:#7C3AED;--brand2:#2563EB;--brandsoft:#F3ECFD;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:#ECECF1;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em;padding:56px;min-height:100vh}
+.mono{font-family:'Geist Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.turn-h{max-width:1180px;margin:0 auto 26px;display:flex;align-items:baseline;gap:12px}
+.turn-t{font-size:19px;font-weight:600;letter-spacing:-0.02em}
+.turn-s{font-size:13.5px;color:var(--muted)}
+.row{display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start;justify-content:center}
+.opt{display:flex;flex-direction:column;gap:14px}
+.opt-cap{display:flex;align-items:center;gap:10px}
+.badge{font-family:'Geist Mono',monospace;font-size:12px;font-weight:500;color:var(--brand);background:var(--brandsoft);border-radius:7px;padding:3px 9px}
+.opt-name{font-size:14px;font-weight:600}
+.opt-desc{font-size:13px;color:var(--muted)}
+/* device frame: sidebar + faint page */
+.frame{display:flex;width:920px;height:720px;background:var(--bg);border-radius:20px;overflow:hidden;box-shadow:0 30px 60px -24px rgba(30,25,60,.28),0 2px 6px rgba(30,25,60,.06)}
+.nav{width:256px;flex-shrink:0;background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;height:100%}
+/* logo */
+.brandrow{display:flex;align-items:center;gap:11px;padding:24px 22px 18px}
+.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#7C3AED,#2563EB);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px -4px rgba(90,50,220,.5)}
+.logo .lucide{width:19px;height:19px;color:#fff}
+.wordmark{font-size:18px;font-weight:600;letter-spacing:-0.03em}
+.wordmark span{color:var(--brand)}
+/* nav body */
+.navbody{flex:1;padding:6px 14px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;color:var(--faint);padding:16px 10px 7px}
+.item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:11px;cursor:pointer;border:none;background:none;font-family:inherit;width:100%;text-align:left;color:var(--muted);transition:background .13s,color .13s}
+.item .lucide{width:18px;height:18px;flex-shrink:0;color:var(--faint);transition:color .13s}
+.item-l{font-size:14px;font-weight:500;letter-spacing:-0.01em}
+.item:hover{background:var(--line2);color:var(--ink2)}
+.item:hover .lucide{color:var(--muted)}
+/* PILL active (opt A) */
+.item.on{background:var(--brandsoft);color:var(--brand)}
+.item.on .lucide{color:var(--brand)}
+.item.on .item-l{font-weight:600}
+.dot{margin-left:auto;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+/* primary practice CTA (opt A) */
+.cta{display:flex;align-items:center;gap:11px;margin:4px 0 2px;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,#7C3AED,#2563EB);color:#fff;border:none;font-family:inherit;cursor:pointer;width:100%;box-shadow:0 8px 18px -6px rgba(90,50,220,.5);transition:transform .13s,box-shadow .13s}
+.cta:hover{transform:translateY(-1px);box-shadow:0 12px 22px -6px rgba(90,50,220,.55)}
+.cta .lucide{width:18px;height:18px}
+.cta-t{font-size:14px;font-weight:600}
+.cta-k{margin-left:auto;font-size:11px;font-weight:500;color:rgba(255,255,255,.72)}
+/* bottom user card */
+.navfoot{padding:12px 14px 16px;border-top:1px solid var(--line)}
+.usercard{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:12px;cursor:pointer;transition:background .13s}
+.usercard:hover{background:var(--line2)}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8B3FF0,#2F6BF0);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;flex-shrink:0}
+.u-name{font-size:13.5px;font-weight:600;line-height:1.2}
+.u-meta{font-size:11.5px;color:var(--muted);margin-top:1px}
+.u-meta b{color:var(--brand);font-weight:600}
+.usercard .chev{margin-left:auto;color:var(--faint)}
+.usercard .chev .lucide{width:16px;height:16px}
+/* LEFT-RAIL active (opt B) */
+.item.railon{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(20,20,40,.05),0 0 0 1px var(--line);position:relative}
+.item.railon::before{content:"";position:absolute;left:-14px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,#7C3AED,#2563EB)}
+.item.railon .lucide{color:var(--brand)}
+.item.railon .item-l{font-weight:600}
+.item.accent{color:var(--brand)}
+.item.accent .lucide{color:var(--brand)}
+.item.accent:hover{background:var(--brandsoft)}
+.kbd{margin-left:auto;font-family:'Geist Mono',monospace;font-size:11px;color:var(--faint);background:var(--line2);border-radius:6px;padding:2px 7px}
+/* upgrade banner (opt B) */
+.upsell{margin:10px 4px 4px;padding:15px 16px;border-radius:14px;background:linear-gradient(140deg,#1B1730,#2A2350);color:#fff;position:relative;overflow:hidden}
+.upsell .glow{position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(140,90,255,.55),transparent 70%)}
+.up-eye{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#C9B6FF;display:flex;align-items:center;gap:6px}
+.up-eye .lucide{width:13px;height:13px}
+.up-t{font-size:14px;font-weight:600;margin:7px 0 3px;letter-spacing:-0.01em}
+.up-d{font-size:11.5px;color:rgba(255,255,255,.7);line-height:1.4}
+.up-btn{margin-top:12px;width:100%;border:none;font-family:inherit;font-size:12.5px;font-weight:600;color:#1B1730;background:#fff;border-radius:9px;padding:8px;cursor:pointer}
+.prostat{margin:10px 4px 4px;padding:14px 15px;border-radius:14px;background:linear-gradient(140deg,#FAF8FE,#F1F5FE);border:1px solid #EBE7F8}
+.pro-top{display:flex;align-items:center;justify-content:space-between}
+.pro-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--brand)}
+.pro-badge .lucide{width:14px;height:14px;color:#EA7317}
+.pro-live{font-size:10px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#15864B;background:#E4F3EA;border-radius:999px;padding:3px 8px}
+.pro-d{font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:8px}
+.pro-renew{font-size:11px;color:var(--faint);font-weight:500;margin-top:10px}
+.pro-renew span{color:var(--brand);font-weight:600;cursor:pointer}
+/* faint page backdrop */
+.page{flex:1;padding:34px 36px;overflow:hidden;position:relative}
+.p-eye{font-size:10.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--faint)}
+.p-title{font-size:26px;font-weight:600;letter-spacing:-0.03em;margin:7px 0 22px;color:var(--ink2)}
+.p-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.p-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;height:118px}
+.p-card.wide{grid-column:1 / -1;height:150px}
+.skel{background:var(--line2);border-radius:6px;height:11px}
+.skel.w40{width:40%}.skel.w60{width:60%}.skel.w25{width:25%}
+.p-fade{position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(245,245,248,.55));pointer-events:none}
+</style>
+</helmet>
+<div class="root">
+<section id="turn1">
+<div class="turn-h"><div class="turn-t">Navigation redesign</div><div class="turn-s">Final sidebar in both plan states — free (<a href="#1b">1b</a>) and Pro (<a href="#1a">1a</a>).</div></div>
+<div class="row">
+
+<div class="opt" id="1a">
+<div class="opt-cap"><span class="badge">1a</span><span class="opt-name">Pro plan</span></div>
+<div class="opt-desc">Identical nav to 1b (isolated Practice button), in the subscribed state — Pro-status card instead of the upsell.</div>
+<div class="frame">
+<nav class="nav">
+<div class="brandrow"><div class="logo"><i data-lucide="audio-lines"></i></div><div class="wordmark">Speech<span>IQ</span></div></div>
+<div class="navbody">
+<button class="cta"><i data-lucide="mic"></i><span class="cta-t">Practice</span><span class="cta-k">+50 XP</span></button>
+<div class="eyebrow">Menu</div>
+<sc-for list="{{ railNav }}" as="n" hint-placeholder-count="4"><button class="item {{ n.bCls }}"><i data-lucide="{{ n.icon }}"></i><span class="item-l">{{ n.label }}</span><sc-if value="{{ n.kbd }}" hint-placeholder-val="{{ false }}"><span class="kbd">{{ n.kbd }}</span></sc-if></button></sc-for>
+<div class="eyebrow">Account</div>
+<button class="item"><i data-lucide="user"></i><span class="item-l">Profile</span></button>
+<div class="prostat"><div class="pro-top"><span class="pro-badge"><i data-lucide="crown"></i> SpeechIQ Pro</span><span class="pro-live">Active</span></div><div class="pro-d">Voice Lab &amp; unlimited coaching unlocked.</div><div class="pro-renew">Renews Aug 8 · <span>Manage</span></div></div>
+</div>
+<div class="navfoot"><div class="usercard"><div class="avatar">A</div><div><div class="u-name">Alex Rivera</div><div class="u-meta">Level 12 · <b>Pro</b></div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div></div>
+</nav>
+<div class="page"><div class="p-eye">Learning path</div><div class="p-title">Keep building fluency</div><div class="p-cards"><div class="p-card wide" style="display:flex;flex-direction:column;gap:12px;justify-content:center"><div class="skel w25"></div><div class="skel w60" style="height:16px"></div><div class="skel w40"></div></div><div class="p-card" style="display:flex;flex-direction:column;gap:11px"><div class="skel w40"></div><div class="skel w60"></div></div><div class="p-card" style="display:flex;flex-direction:column;gap:11px"><div class="skel w40"></div><div class="skel w60"></div></div></div><div class="p-fade"></div></div>
+</div>
+</div>
+
+<div class="opt" id="1b">
+<div class="opt-cap"><span class="badge">1b</span><span class="opt-name">Free plan</span></div>
+<div class="opt-desc">Active page floats on a card with a brand accent rail. Pro upsell nudge at the base.</div>
+<div class="frame">
+<nav class="nav">
+<div class="brandrow"><div class="logo"><i data-lucide="audio-lines"></i></div><div class="wordmark">Speech<span>IQ</span></div></div>
+<div class="navbody">
+<button class="cta"><i data-lucide="mic"></i><span class="cta-t">Practice</span><span class="cta-k">+50 XP</span></button>
+<div class="eyebrow">Menu</div>
+<sc-for list="{{ railNav }}" as="n" hint-placeholder-count="5"><button class="item {{ n.bCls }}"><i data-lucide="{{ n.icon }}"></i><span class="item-l">{{ n.label }}</span><sc-if value="{{ n.kbd }}" hint-placeholder-val="{{ false }}"><span class="kbd">{{ n.kbd }}</span></sc-if></button></sc-for>
+<div class="eyebrow">Account</div>
+<button class="item"><i data-lucide="user"></i><span class="item-l">Profile</span></button>
+<div class="upsell"><div class="glow"></div><div class="up-eye"><i data-lucide="sparkles"></i> Voice Lab</div><div class="up-t">Unlock SpeechIQ Pro</div><div class="up-d">Clone your voice & get unlimited AI coaching.</div><button class="up-btn">Upgrade</button></div>
+</div>
+<div class="navfoot"><div class="usercard"><div class="avatar">A</div><div><div class="u-name">Alex Rivera</div><div class="u-meta">Level 12 · Free plan</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div></div>
+</nav>
+<div class="page"><div class="p-eye">Learning path</div><div class="p-title">Keep building fluency</div><div class="p-cards"><div class="p-card wide" style="display:flex;flex-direction:column;gap:12px;justify-content:center"><div class="skel w25"></div><div class="skel w60" style="height:16px"></div><div class="skel w40"></div></div><div class="p-card" style="display:flex;flex-direction:column;gap:11px"><div class="skel w40"></div><div class="skel w60"></div></div><div class="p-card" style="display:flex;flex-direction:column;gap:11px"><div class="skel w40"></div><div class="skel w60"></div></div></div><div class="p-fade"></div></div>
+</div>
+</div>
+
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount(){ this.icons(); }
+  componentDidUpdate(){ this.icons(); }
+  icons(){ try{ window.lucide && window.lucide.createIcons(); }catch(e){} }
+  renderVals(){
+    const mainNav = [
+      { icon:"layout-dashboard", label:"Home", active:true },
+      { icon:"book-open", label:"Learn", active:false },
+      { icon:"target", label:"Goals", active:false },
+      { icon:"bar-chart-2", label:"History", active:false },
+    ].map(n => ({ ...n, aCls: n.active ? "on" : "" }));
+    const railNav = [
+      { icon:"layout-dashboard", label:"Home", active:false, kbd:"" },
+      { icon:"book-open", label:"Learn", active:true, kbd:"" },
+      { icon:"target", label:"Goals", active:false, kbd:"" },
+      { icon:"bar-chart-2", label:"History", active:false, kbd:"" },
+    ].map(n => ({ ...n, bCls: n.active ? "railon" : "" }));
+    return { mainNav, railNav };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0}
+.page{--ink:#17161B;--ink2:#3B3A44;--muted:#71707B;--faint:#A6A5B0;--line:#EAEAEF;--line2:#F3F3F7;--bg:#F5F5F8;--card:#FFFFFF;--brand:#7C3AED;--brand2:#2563EB;font-family:'Geist','Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+.mono{font-family:'Geist Mono','SF Mono',monospace;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.wrap{max-width:840px;margin:0 auto;padding:28px 32px 72px}
+a{color:var(--brand);text-decoration:none}
+a:hover{color:#6D28D9}
+.lucide{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;stroke-width:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.title{display:flex;align-items:center;gap:11px}
+.title .lucide{width:25px;height:25px;color:var(--brand)}
+.title h1{font-size:29px;font-weight:600;letter-spacing:-0.03em;margin:0}
+.newbtn{display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:14px;font-weight:600;border:none;border-radius:11px;padding:10px 16px;cursor:pointer;background:var(--ink);color:#fff;transition:background .14s}
+.newbtn:hover{background:#000}
+.newbtn .lucide{width:16px;height:16px}
+.sec-t{font-size:15px;font-weight:600;letter-spacing:-0.01em;margin:0 0 14px}
+.sec{margin-bottom:28px}
+/* active goal */
+.goals{display:flex;flex-direction:column;gap:14px}
+.goal{padding:22px 24px}
+.goal-top{display:flex;align-items:flex-start;gap:15px;margin-bottom:18px}
+.goal-ic{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.goal-ic .lucide{width:23px;height:23px}
+.goal-ic.purple{background:#EEE4FB;color:#7C3AED}
+.goal-ic.orange{background:#FDE6D6;color:#EA580C}
+.goal-ic.blue{background:#DDE9FD;color:#2563EB}
+.goal-t{font-size:16.5px;font-weight:600}
+.goal-d{font-size:13px;color:var(--muted);margin-top:3px}
+.goal-prow{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:8px}
+.goal-pcur{color:var(--ink2);font-weight:500}
+.goal-ppct{font-weight:600}
+.goal-track{height:9px;background:var(--line2);border-radius:99px;overflow:hidden}
+.goal-fill{height:100%;border-radius:99px}
+.goal-fill.purple{background:linear-gradient(90deg,#8B3FF0,#7C3AED)}
+.goal-fill.orange{background:linear-gradient(90deg,#F97316,#EA580C)}
+.goal-fill.blue{background:linear-gradient(90deg,#3B82F6,#2563EB)}
+.goal-remain{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.goal-remain .lucide{width:14px;height:14px}
+/* completed */
+.comp-list{display:flex;flex-direction:column;gap:10px}
+.comp{display:flex;align-items:center;gap:14px;padding:15px 17px;border:1px solid #E1EFE7;background:#F7FBF9;border-radius:13px}
+.comp-ic{width:40px;height:40px;border-radius:11px;background:#DDF2E6;color:#059669;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.comp-ic .lucide{width:19px;height:19px}
+.comp-t{font-size:14px;font-weight:600}
+.comp-d{font-size:12.5px;color:var(--muted);margin-top:1px}
+.comp-check{margin-left:auto;color:#059669;display:flex}
+.comp-check .lucide{width:20px;height:20px}
+/* suggested */
+.sugg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sugg{display:flex;align-items:center;gap:13px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;cursor:pointer;font-family:inherit;transition:border-color .14s}
+.sugg:hover{border-color:#D8CBF5}
+.sugg-ic{width:38px;height:38px;border-radius:11px;background:var(--line2);color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sugg-ic .lucide{width:18px;height:18px}
+.sugg-t{font-size:14px;font-weight:500;flex:1}
+.sugg:hover .sugg-t{color:var(--brand)}
+.sugg-add{color:var(--faint);display:flex}
+.sugg-add .lucide{width:18px;height:18px}
+.sugg:hover .sugg-add{color:var(--brand)}
+.shell{display:flex;min-height:100vh}
+.main{flex:1;min-width:0}
+</style>
+</helmet>
+<div class="page"><div class="shell">
+<dc-import name="SideNav" active="goals" plan="free" hint-size="256px,100%"></dc-import>
+<div class="main"><div class="wrap">
+<div class="topbar">
+<div class="title"><i data-lucide="target"></i><h1>Your Goals</h1></div>
+<button class="newbtn"><i data-lucide="plus"></i> New goal</button>
+</div>
+
+<div class="sec">
+<h2 class="sec-t">Active goals</h2>
+<div class="goals">
+<sc-for list="{{ active }}" as="g" hint-placeholder-count="3">
+<div class="card goal">
+<div class="goal-top"><div class="goal-ic {{ g.color }}"><i data-lucide="{{ g.icon }}"></i></div><div><div class="goal-t">{{ g.title }}</div><div class="goal-d">{{ g.desc }}</div></div></div>
+<div class="goal-prow"><span class="goal-pcur">Progress: {{ g.current }} / {{ g.target }}</span><span class="goal-ppct {{ g.color }}" style="{{ g.pctStyle }}">{{ g.pct }}%</span></div>
+<div class="goal-track"><div class="goal-fill {{ g.color }}" style="{{ g.fillStyle }}"></div></div>
+<div class="goal-remain"><i data-lucide="trending-up"></i> {{ g.remain }} more to go</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="sec">
+<h2 class="sec-t">Completed goals</h2>
+<div class="card" style="padding:20px 22px">
+<div class="comp-list">
+<sc-for list="{{ completed }}" as="c" hint-placeholder-count="3">
+<div class="comp"><div class="comp-ic"><i data-lucide="{{ c.icon }}"></i></div><div><div class="comp-t">{{ c.title }}</div><div class="comp-d">Completed {{ c.date }}</div></div><span class="comp-check"><i data-lucide="check-circle-2"></i></span></div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div class="sec" style="margin-bottom:0">
+<h2 class="sec-t">Suggested goals</h2>
+<div class="sugg-grid">
+<sc-for list="{{ suggested }}" as="s" hint-placeholder-count="4">
+<button class="sugg"><div class="sugg-ic"><i data-lucide="{{ s.icon }}"></i></div><span class="sugg-t">{{ s.title }}</span><span class="sugg-add"><i data-lucide="plus"></i></span></button>
+</sc-for>
+</div>
+</div>
+
+</div></div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1120,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  componentDidMount() { this.icons(); }
+  componentDidUpdate() { this.icons(); }
+  icons() { try { window.lucide && window.lucide.createIcons(); } catch (e) {} }
+
+  ACTIVE = [
+    { title: "Reach 90 Fluency", desc: "Improve your fluency score to 90 or above", current: 87, target: 90, icon: "target", color: "purple" },
+    { title: "Reach 7-day streak", desc: "Practice every day for 7 days in a row", current: 5, target: 7, icon: "flame", color: "orange" },
+    { title: "Complete 50 sessions", desc: "Reach a total of 50 practice sessions", current: 47, target: 50, icon: "bar-chart-3", color: "blue" },
+  ];
+
+  COMPLETED = [
+    { title: "Reach Level 10", date: "5 days ago", icon: "trophy" },
+    { title: "100% Pacing Score", date: "1 week ago", icon: "zap" },
+    { title: "30 Total Sessions", date: "2 weeks ago", icon: "graduation-cap" },
+  ];
+
+  SUGGESTED = [
+    { title: "Reach 95 Overall Score", icon: "target" },
+    { title: "30-day Streak", icon: "flame" },
+    { title: "Master Pronunciation", icon: "megaphone" },
+    { title: "Practice 20 Hours", icon: "timer" },
+  ];
+
+  COLORHEX = { purple: "#7C3AED", orange: "#EA580C", blue: "#2563EB" };
+
+  renderVals() {
+    const active = this.ACTIVE.map((g) => {
+      const pct = Math.round((g.current / g.target) * 100);
+      return {
+        ...g,
+        pct,
+        remain: g.target - g.current,
+        fillStyle: { width: Math.min(100, pct) + "%" },
+        pctStyle: { color: this.COLORHEX[g.color] },
+      };
+    });
+    return { active, completed: this.COMPLETED, suggested: this.SUGGESTED };
+  }
+}
+</script>
+</body>
+</html>
