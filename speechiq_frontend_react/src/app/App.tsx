@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { Dashboard } from "./components/Dashboard";
 import { PracticeHub } from "./components/PracticeHub";
@@ -9,6 +9,7 @@ import { Goals } from "./components/Goals";
 import { LearningPath } from "./components/LearningPath";
 import { SideNav } from "./components/SideNav";
 import { Login } from "./components/Login";
+import { API_BASE_URL } from "./lib/config";
 
 type View = "home" | "practice" | "synthesis" | "learn" | "goals" | "history" | "profile";
 
@@ -23,6 +24,15 @@ export default function App() {
   );
 
   const navigate = (page: string) => setCurrentView(page as View);
+
+  // Cloud Run scales the API to zero after 15 minutes idle; hitting it here,
+  // as early as possible in the visit, gives it a head start on cold-starting
+  // (importing torch/whisper + loading the model) before the user reaches the
+  // practice flow. Fire-and-forget: a slow or failed ping must never block or
+  // affect the UI, so no loading state and errors are swallowed silently.
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/`).catch(() => {});
+  }, []);
 
   const handleSignIn = (remember: boolean) => {
     (remember ? localStorage : sessionStorage).setItem(AUTH_FLAG, "1");
