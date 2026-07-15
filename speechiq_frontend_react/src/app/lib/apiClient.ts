@@ -7,6 +7,7 @@ import { API_BASE_URL } from "./config";
 export async function apiPostMultipart(path: string, formData: FormData): Promise<unknown> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method: "POST",
+    headers: { "ngrok-skip-browser-warning": "1" },
     body: formData,
   });
 

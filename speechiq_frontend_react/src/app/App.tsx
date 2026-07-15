@@ -25,13 +25,14 @@ export default function App() {
 
   const navigate = (page: string) => setCurrentView(page as View);
 
-  // Cloud Run scales the API to zero after 15 minutes idle; hitting it here,
-  // as early as possible in the visit, gives it a head start on cold-starting
-  // (importing torch/whisper + loading the model) before the user reaches the
-  // practice flow. Fire-and-forget: a slow or failed ping must never block or
-  // affect the UI, so no loading state and errors are swallowed silently.
+  // Hitting the backend here, as early as possible in the visit, gives it a head
+  // start on cold-starting (importing torch/whisper + loading the model) before
+  // the user reaches the practice flow. Fire-and-forget: a slow or failed ping
+  // must never block or affect the UI, so no loading state and errors are
+  // swallowed silently. The header skips ngrok's free-tier browser warning
+  // interstitial, which otherwise intercepts this request instead of the backend.
   useEffect(() => {
-    fetch(`${API_BASE_URL}/`).catch(() => {});
+    fetch(`${API_BASE_URL}/`, { headers: { "ngrok-skip-browser-warning": "1" } }).catch(() => {});
   }, []);
 
   const handleSignIn = (remember: boolean) => {
