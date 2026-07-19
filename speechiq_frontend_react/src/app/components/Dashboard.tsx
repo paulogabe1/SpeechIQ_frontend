@@ -81,8 +81,8 @@ export function Dashboard({ onNavigate }: DashboardProps) {
             You're on a <b className="text-[#17161B] font-semibold">7-day streak</b> — keep it going.
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-[7px] text-sm font-semibold text-[#EA580C] bg-white border border-[#EAEAEF] rounded-full px-3.5 py-2 shadow-[0_1px_2px_rgba(20,20,40,0.05)]">
+        <div className="flex items-center gap-3 shrink-0">
+          <span className="inline-flex items-center gap-[7px] whitespace-nowrap text-sm font-semibold text-[#EA580C] bg-white border border-[#EAEAEF] rounded-full px-3.5 py-2 shadow-[0_1px_2px_rgba(20,20,40,0.05)]">
             <Flame className="w-4 h-4" /> 7 days
           </span>
           <div

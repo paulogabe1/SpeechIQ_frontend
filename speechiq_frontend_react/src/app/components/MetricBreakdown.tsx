@@ -1,7 +1,6 @@
 import { ArrowLeft, ArrowRight, TrendingUp, TrendingDown, Award, AudioLines, Sparkles, Check } from "lucide-react";
 import { useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
-import * as HoverCard from "@radix-ui/react-hover-card";
 import { BellCurveTooltip } from "./BellCurveTooltip";
 import { AudioPlayer } from "./AudioPlayer";
 import { getSilenceHighlights, DEFAULT_IDEAL_RANGES, type AnalysisResult, type IdealRangeKey, type MetricCategory } from "../lib/analysisResult";
@@ -390,9 +389,9 @@ export function MetricBreakdown({ metric, score, result, audioSource, onBack }: 
                   const rowScoreColor = idealScore !== null ? getIdealRangeScoreColor(idealScore) : undefined;
 
                   return (
-                    <HoverCard.Root key={i} openDelay={100} closeDelay={100}>
-                      <HoverCard.Trigger asChild>
-                        <div className="flex items-center justify-between px-4 py-3.5 bg-[#F3F3F7] rounded-xl cursor-help transition-colors hover:bg-[#EFEBFA]">
+                    <Popover.Root key={i}>
+                      <Popover.Trigger asChild>
+                        <button type="button" className="flex items-center justify-between w-full px-4 py-3.5 bg-[#F3F3F7] rounded-xl cursor-pointer transition-colors hover:bg-[#EFEBFA] text-left">
                           <div>
                             <div className="text-sm font-medium">{detail.metric}</div>
                             {hasIdealRange && (
@@ -414,11 +413,11 @@ export function MetricBreakdown({ metric, score, result, audioSource, onBack }: 
                               </span>
                             )}
                           </div>
-                        </div>
-                      </HoverCard.Trigger>
+                        </button>
+                      </Popover.Trigger>
                       {hasIdealRange && (
-                        <HoverCard.Portal>
-                          <HoverCard.Content
+                        <Popover.Portal>
+                          <Popover.Content
                             // Each trigger is a nearly-full-width row, not a small inline
                             // element — attaching "beside" it (side="right") means fighting
                             // for horizontal room that essentially never exists next to a
@@ -444,10 +443,10 @@ export function MetricBreakdown({ metric, score, result, audioSource, onBack }: 
                               idealMax={detail.idealMax!}
                               unit={detail.unit}
                             />
-                          </HoverCard.Content>
-                        </HoverCard.Portal>
+                          </Popover.Content>
+                        </Popover.Portal>
                       )}
-                    </HoverCard.Root>
+                    </Popover.Root>
                   );
                 })}
               </div>

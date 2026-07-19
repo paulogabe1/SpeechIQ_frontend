@@ -115,7 +115,7 @@ export function BellCurveTooltip({ metric, value, idealMin, idealMax, unit }: Be
   const scoreColor = getIdealRangeScoreColor(score);
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow-[0_20px_50px_-12px_rgba(20,18,28,0.35)] border border-[#EBE3FB] w-80 max-w-[calc(100vw-2rem)] z-[9999] text-[#17161B] tracking-[-0.01em] font-['Geist','Inter',system-ui,sans-serif]">
+    <div className="bg-white p-4 rounded-xl shadow-[0_20px_50px_-12px_rgba(20,18,28,0.35)] border border-[#EBE3FB] w-72 max-w-[calc(100vw-3rem)] z-[9999] text-[#17161B] tracking-[-0.01em] font-['Geist','Inter',system-ui,sans-serif]">
       <div className="mb-3">
         <div className="font-semibold mb-1">{metric}</div>
         <div className="text-sm text-[#71707B] mb-2">

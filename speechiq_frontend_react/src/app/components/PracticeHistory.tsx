@@ -102,11 +102,16 @@ export function PracticeHistory(_props: PracticeHistoryProps) {
         </div>
       </div>
 
-      <div className={`${cardClass} px-7 py-[26px]`}>
+      <div className={`${cardClass} px-4 sm:px-7 py-[26px]`}>
         <span className="text-[17px] font-semibold tracking-[-0.02em]">Your progress journey</span>
         <div className="text-[12.5px] text-[#71707B] mt-[3px]">Overall, fluency and pacing across your last 10 sessions</div>
 
-        <svg className="w-full h-auto block mt-2.5" viewBox="0 0 920 330">
+        {/* The chart's text is drawn in SVG user units, so it shrinks along with a
+            width:100% render — legible on desktop, unreadably tiny once squeezed
+            into a phone screen. Below the viewBox's own 920px, render at native
+            size and let the card scroll horizontally instead of shrinking it. */}
+        <div className="overflow-x-auto mt-2.5">
+          <svg className="h-auto block min-w-[640px]" viewBox="0 0 920 330">
           <defs>
             <linearGradient id="ovf" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#9333EA" stopOpacity={0.13} />
@@ -152,7 +157,8 @@ export function PracticeHistory(_props: PracticeHistoryProps) {
               #{s.id}
             </text>
           ))}
-        </svg>
+          </svg>
+        </div>
 
         <div className="flex gap-[22px] mt-3.5 flex-wrap">
           {[
@@ -190,13 +196,13 @@ export function PracticeHistory(_props: PracticeHistoryProps) {
         </div>
       </div>
 
-      <div className={`${cardClass} px-7 py-[26px] mt-5`}>
+      <div className={`${cardClass} px-4 sm:px-7 py-[26px] mt-5`}>
         <span className="text-[17px] font-semibold tracking-[-0.02em]">All sessions</span>
         <div className="flex flex-col gap-3 mt-[18px]">
           {SESSIONS.slice()
             .reverse()
             .map((s) => (
-              <div key={s.id} className="border border-[#EAEAEF] rounded-[14px] px-5 py-[18px] transition-colors hover:border-[#D8D2EC]">
+              <div key={s.id} className="border border-[#EAEAEF] rounded-[14px] px-3.5 sm:px-5 py-[18px] transition-colors hover:border-[#D8D2EC]">
                 <div className="flex items-start justify-between mb-3.5">
                   <div>
                     <div className="text-[15px] font-semibold">Session #{s.id}</div>
@@ -211,7 +217,7 @@ export function PracticeHistory(_props: PracticeHistoryProps) {
                     <div className="text-[11px] text-[#A6A5B0] font-medium">Overall</div>
                   </div>
                 </div>
-                <div className="grid grid-cols-5 gap-2.5">
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
                   {DIMS.map((d) => (
                     <div key={d.name} className="text-center bg-[#F3F3F7] rounded-[10px] py-2.5 px-1.5">
                       <div className="text-[11px] text-[#71707B] mb-1">{d.name}</div>

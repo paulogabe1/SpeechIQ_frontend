@@ -55,7 +55,7 @@ function NavItem({
 
 export function SideNav({ currentPage, onNavigate }: SideNavProps) {
   return (
-    <nav className="sticky top-0 h-screen w-64 shrink-0 bg-white border-r border-[#EAEAEF] flex flex-col text-[#17161B] tracking-[-0.01em] antialiased z-50">
+    <nav className="hidden lg:flex sticky top-0 h-screen w-64 shrink-0 bg-white border-r border-[#EAEAEF] flex-col text-[#17161B] tracking-[-0.01em] antialiased z-50">
       {/* Brand */}
       <button
         onClick={() => onNavigate("home")}

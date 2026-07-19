@@ -8,10 +8,16 @@ import { Profile } from "./components/Profile";
 import { Goals } from "./components/Goals";
 import { LearningPath } from "./components/LearningPath";
 import { SideNav } from "./components/SideNav";
+import { BottomNav } from "./components/BottomNav";
 import { Login } from "./components/Login";
 import { API_BASE_URL } from "./lib/config";
+import { AudioLines } from "lucide-react";
 
 type View = "home" | "practice" | "synthesis" | "learn" | "goals" | "history" | "profile";
+
+// Practice and Voice Lab are full-screen flows with no chrome, same as the desktop
+// SideNav's behavior — matches the Flutter reference app's documented navigation.
+const TAB_VIEWS: View[] = ["home", "learn", "goals", "history", "profile"];
 
 // UI-only auth gate for now — real Supabase auth is a later wiring task. "Keep me
 // signed in" decides whether the flag survives the browser session.
@@ -54,13 +60,32 @@ export default function App() {
         ? "max-w-[1104px]"
         : "max-w-[784px]";
 
+  const isTabView = TAB_VIEWS.includes(currentView);
+
   return (
     <div className="min-h-screen flex bg-[#F5F5F8] text-[#17161B] tracking-[-0.01em] antialiased font-['Geist','Inter',system-ui,sans-serif]">
       <Toaster position="top-center" richColors />
       <SideNav currentPage={currentView} onNavigate={(page) => setCurrentView(page)} />
 
+      {/* Mobile top bar — replaces the SideNav's brand mark below lg, where the
+          sidebar itself is hidden entirely. */}
+      {isTabView && (
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center gap-2.5 px-4 py-3 bg-white border-b border-[#EAEAEF]">
+          <div className="w-8 h-8 rounded-[9px] bg-gradient-to-br from-[#9333EA] to-[#2563EB] flex items-center justify-center shrink-0">
+            <AudioLines className="w-[17px] h-[17px] text-white" />
+          </div>
+          <span className="text-base font-semibold tracking-[-0.03em]">
+            Speech<span className="text-[#9333EA]">IQ</span>
+          </span>
+        </div>
+      )}
+
       <main className="flex-1 min-w-0">
-        <div className={`${wrapWidth} mx-auto px-8 pt-7 pb-16`}>
+        <div
+          className={`${wrapWidth} mx-auto px-4 sm:px-6 lg:px-8 pt-[72px] lg:pt-7 ${
+            isTabView ? "pb-24 lg:pb-16" : "pb-16"
+          }`}
+        >
           {currentView === "home" && <Dashboard onNavigate={navigate} />}
           {currentView === "practice" && <PracticeHub onNavigate={navigate} />}
           {currentView === "synthesis" && <VoiceSynthesis onNavigate={navigate} />}
@@ -70,6 +95,8 @@ export default function App() {
           {currentView === "profile" && <Profile onNavigate={navigate} />}
         </div>
       </main>
+
+      {isTabView && <BottomNav currentPage={currentView} onNavigate={(page) => setCurrentView(page as View)} />}
     </div>
   );
 }
