@@ -1,13 +1,64 @@
 import { ArrowLeft, ArrowRight, TrendingUp, TrendingDown, Award, AudioLines, Sparkles, Check } from "lucide-react";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import * as Popover from "@radix-ui/react-popover";
+import * as HoverCard from "@radix-ui/react-hover-card";
 import { BellCurveTooltip } from "./BellCurveTooltip";
 import { AudioPlayer } from "./AudioPlayer";
+import { useIsMobile } from "./ui/use-mobile";
 import { getSilenceHighlights, DEFAULT_IDEAL_RANGES, type AnalysisResult, type IdealRangeKey, type MetricCategory } from "../lib/analysisResult";
 import { getMetricFeedback } from "../lib/metricFeedback";
 import { calculateIdealRangeScore, getIdealRangeScoreColor } from "../lib/idealRangeScore";
 import { METRIC_DEFINITIONS, MODULE_MAP } from "../lib/metricDefinitions";
 import { scoreColor, grade } from "../lib/scoreDisplay";
+
+// Hover works great with a mouse but has no equivalent on touch — a tap can't
+// "hover then leave". So this row uses HoverCard (hover, matching the original
+// desktop UX) everywhere except mobile, where it falls back to Popover (tap to
+// open/close). A prior pass switched this to Popover unconditionally to fix
+// mobile, which silently took hover away from desktop too — this restores it.
+function MetricRowCard({ isMobile, trigger, children }: { isMobile: boolean; trigger: ReactNode; children: ReactNode }) {
+  const contentProps = {
+    side: "bottom" as const,
+    sideOffset: 10,
+    collisionPadding: 16,
+    // Each trigger is a nearly-full-width row, not a small inline element —
+    // attaching "beside" it (side="right") means fighting for horizontal room
+    // that essentially never exists next to a wide block, no matter how much
+    // collision padding/boundary is tuned (confirmed: Radix's own
+    // --radix-popper-available-width measured ~35px here, and flip had
+    // nowhere better to go either). Attaching below instead gives it the
+    // row's full width to work with, centered under it.
+    //
+    // Without an explicit boundary, Radix's default collision detection
+    // ("clippingAncestors") walks up from the trigger and picks the modal
+    // panel's own scrollable div as the "safe area" (its overflow-y-auto
+    // forces the browser to actually clip overflow-x too, per the CSS spec,
+    // even though it reads as computed overflow-x: visible) — pinning it to
+    // the real viewport instead avoids that false, too-narrow boundary.
+    collisionBoundary: typeof document !== "undefined" ? document.body : undefined,
+    className: "z-[9999]",
+  };
+
+  if (isMobile) {
+    return (
+      <Popover.Root>
+        <Popover.Trigger asChild>{trigger}</Popover.Trigger>
+        <Popover.Portal>
+          <Popover.Content {...contentProps}>{children}</Popover.Content>
+        </Popover.Portal>
+      </Popover.Root>
+    );
+  }
+
+  return (
+    <HoverCard.Root openDelay={100} closeDelay={100}>
+      <HoverCard.Trigger asChild>{trigger}</HoverCard.Trigger>
+      <HoverCard.Portal>
+        <HoverCard.Content {...contentProps}>{children}</HoverCard.Content>
+      </HoverCard.Portal>
+    </HoverCard.Root>
+  );
+}
 
 const cardClass = "bg-white border border-[#EAEAEF] rounded-[18px]";
 
@@ -232,6 +283,7 @@ function buildBaseMetricData(metric: string, result?: AnalysisResult): MetricDat
 }
 
 export function MetricBreakdown({ metric, score, result, audioSource, onBack }: MetricBreakdownProps) {
+  const isMobile = useIsMobile();
   const [pauseHighlights, setPauseHighlights] = useState<Array<{ start: number; end: number }>>([]);
 
   const data = getMetricData(metric, result);
@@ -389,8 +441,10 @@ export function MetricBreakdown({ metric, score, result, audioSource, onBack }: 
                   const rowScoreColor = idealScore !== null ? getIdealRangeScoreColor(idealScore) : undefined;
 
                   return (
-                    <Popover.Root key={i}>
-                      <Popover.Trigger asChild>
+                    <MetricRowCard
+                      key={i}
+                      isMobile={isMobile}
+                      trigger={
                         <button type="button" className="flex items-center justify-between w-full px-4 py-3.5 bg-[#F3F3F7] rounded-xl cursor-pointer transition-colors hover:bg-[#EFEBFA] text-left">
                           <div>
                             <div className="text-sm font-medium">{detail.metric}</div>
@@ -414,39 +468,18 @@ export function MetricBreakdown({ metric, score, result, audioSource, onBack }: 
                             )}
                           </div>
                         </button>
-                      </Popover.Trigger>
+                      }
+                    >
                       {hasIdealRange && (
-                        <Popover.Portal>
-                          <Popover.Content
-                            // Each trigger is a nearly-full-width row, not a small inline
-                            // element — attaching "beside" it (side="right") means fighting
-                            // for horizontal room that essentially never exists next to a
-                            // wide block, no matter how much collision padding/boundary is
-                            // tuned (confirmed: Radix's own --radix-popper-available-width
-                            // measured ~35px here, and flip had nowhere better to go either,
-                            // since the trigger leaves barely any room on the left either).
-                            // Attaching below instead gives it the row's full width to work
-                            // with, centered under it.
-                            side="bottom"
-                            sideOffset={10}
-                            collisionPadding={16}
-                            // This trigger is nested inside the modal's own scrollable panel,
-                            // which Radix's default clipping-ancestor detection would
-                            // otherwise (mis)treat as the boundary instead of the viewport.
-                            collisionBoundary={typeof document !== "undefined" ? document.body : undefined}
-                            className="z-[9999]"
-                          >
-                            <BellCurveTooltip
-                              metric={detail.metric}
-                              value={detail.value}
-                              idealMin={detail.idealMin!}
-                              idealMax={detail.idealMax!}
-                              unit={detail.unit}
-                            />
-                          </Popover.Content>
-                        </Popover.Portal>
+                        <BellCurveTooltip
+                          metric={detail.metric}
+                          value={detail.value}
+                          idealMin={detail.idealMin!}
+                          idealMax={detail.idealMax!}
+                          unit={detail.unit}
+                        />
                       )}
-                    </Popover.Root>
+                    </MetricRowCard>
                   );
                 })}
               </div>
